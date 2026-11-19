@@ -1,0 +1,34 @@
+{
+  "python": {
+    "release": "20261026",
+    "version": "3.12.16",
+    "base_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261026/",
+    "assets": {
+      "arm64": {
+        "name": "cpython-3.12.16+20261026-aarch64-apple-darwin-install_only_stripped.tar.gz",
+        "sha256": "353d5f1b4fd2715e7053f12f068435d5bbad16b91e057006b5d01e0925709a7e"
+      },
+      "x86_64": {
+        "name": "cpython-3.12.16+20261026-x86_64-apple-darwin-install_only_stripped.tar.gz",
+        "sha256": "37c38fda76fec1fbf310adcbafb7f0d96af13b5511bf8ea954c3aa8eec185734"
+      }
+    }
+  },
+  "sources": {
+    "sdcc-src.tar.bz2": {
+      "dir": "sdcc-4.5.0",
+      "url": "https://downloads.sourceforge.net/project/sdcc/sdcc/4.5.0/sdcc-src-4.5.0.tar.bz2",
+      "sha256": "d5030437fb436bb1d93a8dbdbfb46baaa60613318f4fb3f5871d72815d1eed80"
+    },
+    "gputils.tar.bz2": {
+      "dir": "gputils-1.5.2",
+      "url": "https://downloads.sourceforge.net/project/gputils/gputils/1.5.0/gputils-1.5.2.tar.bz2",
+      "sha256": "8fb8820b31d7c1f7c776141ccb3c4f06f40af915da6374128d752d1eee3addf2"
+    },
+    "boost.tar.bz2": {
+      "dir": "boost_1_86_0",
+      "url": "https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.bz2",
+      "sha256": "1bed88e40401b2cb7a1f76d4bab499e352fa4d0c5f31c0dbae64e24d34d7513b"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {"id": "blank_c", "title": "Boş C", "lang": "c", "fosc": 4000000, "desc": "Boş mikroC uyumlu C programı (PORTB çıkış)."},
+  {"id": "blank_asm", "title": "Boş ASM", "lang": "asm", "fosc": 4000000, "desc": "Boş PIC16F628A assembly programı (MPASM uyumlu)."},
+  {"id": "lab1", "title": "Lab1 LED ve buton", "lang": "c", "fosc": 8000000, "desc": "RA0 basılıyken PORTB LED'leri kayar, RA1 basılıyken hepsi yanar.", "circuit": "lab1_led_switch"},
+  {"id": "lab2", "title": "Lab2 ASM sayaç", "lang": "asm", "fosc": 4000000, "desc": "PORTB üzerinde ikili sayaç, gecikme alt programı ile (RB0..RB3 → 7448 → 7 segment).", "circuit": "lab2"},
+  {"id": "lab3", "title": "Lab3 başlangıç", "lang": "c", "fosc": 4000000, "desc": "Üç 7448 + 7 segment göstergeye sayı yazma iskeleti (RA5 START/STOP, RA6 RESET).", "circuit": "lab3"},
+  {"id": "timer0", "title": "Timer0 kesmesi", "lang": "c", "fosc": 4000000, "desc": "Timer0 taşma kesmesiyle RB0 LED'ini yaklaşık 1 Hz'de yakıp söndürür.", "circuit": "lab1_led_switch"},
+  {"id": "rb0_int", "title": "RB0/INT kesmesi", "lang": "c", "fosc": 4000000, "desc": "RB0 yükselen kenarında kesme; basış sayısı RA0..RA3 LED'lerinde ikili gösterilir.", "circuit": "rb0_int_demo"},
+  {"id": "seven_seg", "title": "7-seg tarama", "lang": "c", "fosc": 4000000, "desc": "4 haneli ortak katot göstergede çoklu tarama (0000-9999 sayar).", "circuit": "mux4_demo"},
+  {"id": "lcd", "title": "LCD 4-bit", "lang": "c", "fosc": 4000000, "desc": "LM016L üzerinde Lcd_Out / IntToStr ile sayaç.", "circuit": "lcd_demo"},
+  {"id": "keypad_lcd", "title": "Tuş takımı + LCD", "lang": "c", "fosc": 4000000, "desc": "4x4 tuş takımından okunan tuşu LCD'ye yazar.", "circuit": "keypad_demo"},
+  {"id": "uart", "title": "UART echo", "lang": "c", "fosc": 4000000, "desc": "9600 baud; Virtual Terminal'den gelen karakteri geri gönderir.", "circuit": "uart_demo"},
+  {"id": "pwm", "title": "PWM", "lang": "c", "fosc": 4000000, "desc": "CCP1 (RB3) üzerinde 5 kHz PWM, doluluk 500 ms'de bir artar.", "circuit": "lab1_led_switch"},
+  {"id": "eeprom", "title": "EEPROM", "lang": "c", "fosc": 4000000, "desc": "Veri EEPROM'una yazıp okur, PORTB LED'lerinde gösterir.", "circuit": "lab1_led_switch"},
+  {"id": "comparator", "title": "Karşılaştırıcı (CMCON/VRCON)", "lang": "c", "fosc": 4000000, "desc": "RA0'daki POT-HG gerilimi dahili VREF (2,5 V) ile karşılaştırılır; CMIF kesmesinde RB0 LED'i C1OUT'u izler.", "circuit": "comparator_demo"}
+]

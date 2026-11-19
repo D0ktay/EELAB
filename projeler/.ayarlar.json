@@ -1,0 +1,8 @@
+{
+ "Eeprom_Demo.c": {
+  "fosc": 4000000
+ },
+ "Lab1_LedSwitch.c": {
+  "fosc": 8000000
+ }
+}

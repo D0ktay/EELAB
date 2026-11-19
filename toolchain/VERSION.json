@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "sdcc": "4.5.0",
+ "gputils": "1.5.2",
+ "minos": "11.0",
+ "prefix": "/opt/eelab-toolchain",
+ "sources": {
+  "sdcc-src.tar.bz2": "d5030437fb436bb1d93a8dbdbfb46baaa60613318f4fb3f5871d72815d1eed80",
+  "gputils.tar.bz2": "8fb8820b31d7c1f7c776141ccb3c4f06f40af915da6374128d752d1eee3addf2",
+  "boost.tar.bz2": "1bed88e40401b2cb7a1f76d4bab499e352fa4d0c5f31c0dbae64e24d34d7513b"
+ },
+ "tools": {
+  "bin/sdcc": {
+   "archs": [
+    "x86_64",
+    "arm64"
+   ]
+  },
+  "bin/gpasm": {
+   "archs": [
+    "x86_64",
+    "arm64"
+   ]
+  },
+  "bin/gplink": {
+   "archs": [
+    "x86_64",
+    "arm64"
+   ]
+  },
+  "bin/sdcpp": {
+   "archs": []
+  },
+  "cpp/cpp": {
+   "archs": [
+    "x86_64",
+    "arm64"
+   ]
+  },
+  "cpp/cc1": {
+   "archs": [
+    "x86_64",
+    "arm64"
+   ]
+  }
+ },
+ "fixed": {
+  "gpheader/p16f628a.inc": "00f3a49cde5c571b28c773da5e79ebfe41578f465597ce28b2170cf2948ae686",
+  "include/assert.h": "25f5f8e8e6c31a9f28ef0cbb9cf975e4f87c6df31e7f42d8e8cd88fcd6b76d86",
+  "include/ctype.h": "fa0de6a54668191f71b116de9f6b14f43c96a538a07af3c8cbc6c70b3d7dc955",
+  "include/ds80c390.h": "9a31ea502684832fe126f1e79fa265e80f783e6b8c71d2b5ac0f14ce1f8fa014",
+  "include/errno.h": "c80fdf5065b54c11497f180084771d786db280bc0fbcbf71f122012a53325009",
+  "include/float.h": "2cc1280c863c0f93c9a592a2c7f93747bdab60b24315e142f0c66ffe956c59f3",
+  "include/gcc_attr.h": "3e328592781cf31cffc32ca93d7716d0e30c0cafed63eb3718023c4c8c9f8c53",
+  "include/inttypes.h": "f109fb00fa9b216e1d5b6f1bbf6b2680c54320b83c74aa7139693506de78b66e",
+  "include/iso646.h": "99342f327a91e52835e075ff633703edabe5a4fc61923c50f3704517b924cec9",
+  "include/limits.h": "0782197253203c41097d3c66e40dbdcc5ecec516b773e499eed51da8155df4a9",
+  "include/math.h": "c1557e00488d5d931224ad9415272de8438aeeca84ab49677eceffceb0ff66e3",
+  "include/pic14/math.h": "c35d5b2a735a5712068dd88e279969c689bb71570b33e651a479747d0c530c26",
+  "include/pic14/p16f_common.inc": "8c55de5ab92571693d00a5581cd16d11b3fe4116893c7cd4dcff5cf0095de127",
+  "include/pic14/pic14_malloc.h": "d9545d7f673ccb2b9164da9b42e69570ac6e26abed2ce066513fc2a6868230f4",
+  "include/pic14/pic14devices.txt": "c285517aec615e6154839900dd1f21a8b11da85b7c2326e9aadf1f656b8ec30a",
+  "include/pic14/pic16fam.h": "acc488b953a2dd2bde8dd5b937cafde4fc241c26846ad07c87cacd8d6acf843f",
+  "include/pic14/pic16regs.h": "e195fd5a2635a17ad4ec9ea8f566dfd5b58e6837fe814ede25ef9e75bdb456de",
+  "include/pic14/sdcc-lib.h": "5348341e1d271dd4c58e2ed81158272364e595ab5cfb556e0b52bad206d298f8",
+  "include/pic14/setjmp.h": "e9a87c2374c23622d6ef9e6fd7dfca47fb353bd099f67cee8b50c3350dc36094",
+  "include/pic14/stdarg.h": "30809c33807657d1874117813b2210a632a9acac3b017c8c4f9e5c53638b3bbf",
+  "include/pic14/stdio.h": "c3ca17aa5c0247b13ef67f489b14916f08640e041c8257d07fdc909de4222015",
+  "include/pic14/stdlib.h": "79ec7c517757ed880111573b2d5d90a1326131d0c6bfa815abc835adf10de148",
+  "include/pic14/time.h": "9877815e904bac444a8597819fef11280b3695973c3d655eb39aa2feb235838a",
+  "include/sdcc-lib.h": "f6a7594cb1fe085bf4d511eafee3e5f9d1d7ceabbe3d272b8389ba6510df402c",
+  "include/setjmp.h": "0141f5aa57b2c74ea7e87e44938e5802b78844cfc3fca4350edc84896eff5f28",
+  "include/signal.h": "30362c66464f87cc02a2e13186c7e36b5e5df2fb23f597613348bffe8da07aae",
+  "include/stdalign.h": "741f12e56e4572d2b3f44e5fd4c629137104e92ca83130e38af85f0f5ccac970",
+  "include/stdarg.h": "8a55270712b8df5c0883e630439042e65c7a5f9069e9c2894332a7fd95356512",
+  "include/stdatomic.h": "3e845abb51cfcba1234ab928d7c7bcf80c301a9622d2c9d69b47c7fb26945e5d",
+  "include/stdbit.h": "41ab21cbc6a0748b6fa01b2b776e662de60dbb3af28f65ae2c180e9a3b7e365e",
+  "include/stdbool.h": "169e75df1eb7a2ef8d5141cd1224766b8ebabc49e9a72400c31d3202d9a065e4",
+  "include/stdckdint.h": "8086f7aeda1d2681a8b4cb05e0f72dff5e7b0145e740248da21efbf29230f8b9",
+  "include/stddef.h": "b53e62c8c7dc19d958861b61102045455bbb5bdcb54b0770f24a07de948d1104",
+  "include/stdint.h": "3802f413d6b807a9b22dcbda3629a211b7a638e8f493fa6c9cbeffb4f66b3106",
+  "include/stdio.h": "c4a24e7585c8537b153050d47e5c1e5bb76f4bf328f1a9449b93847c633b537f",
+  "include/stdlib.h": "17c22dd71a8b712e630d486776097117d7318bfbf7115d2876a876e36adc2a28",
+  "include/stdnoreturn.h": "819e1a1222a93505de61b31c6970209b8e9086829dc79959292f4fc337c2505e",
+  "include/string.h": "4097a3e734d4254a1117e0fa02c099342feb99f699c66bdb30dddf8ba62e3669",
+  "include/time.h": "e42f6b9959496a9433b8249a394a233cde8536823b963595ebc8da223bd8e27a",
+  "include/tinibios.h": "2058ee6dc332ce4c28ca0ce3f96920aac432c18c07aa0177aef6c44d9e0cd210",
+  "include/uchar.h": "32b20cac69ba79c76a1705e33583bafbfde5983fb0ee1010f81922243d15864c",
+  "include/wchar.h": "73e84a7b3592b8be5de16209af83b3c28e87ab13c83e7e39e65fe0954402bd04",
+  "lib/dev628a.o": "3584fa90db1da7b92bc07ecb32740533fbaafd9833519de2fa9fd2a6c3900411",
+  "lib/libsdcc.lib": "3ab4d11e3d2ce592746af1d0675eca14c3dc3fbda558691d61ded88b66ee8ab3",
+  "lkr/16f628a_g.lkr": "85529f05b61e3a20ea5ab97e47a2f508d8f0b7bf15d601192123add6e6b7f9c2",
+  "nonfree/pic14/pic16f628a.h": "3654c8b5e2a9bb5b7471e4e9b5f83f31b22cef682338d7c237963b823df9ad64"
+ }
+}

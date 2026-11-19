@@ -1,0 +1,21 @@
+{
+ "schema": 1,
+ "note": "EELAB_PLAN.md Ek B. files = derleme hattinin urettigi HEX md5 (projeler/, .ayarlar.json Fosc); frozen = depodaki dondurulmus dosyalar.",
+ "files": {
+  "Eeprom_Demo.hex": "7a87477588daee23ac1e07dac97afd1d",
+  "Keypad_Demo.hex": "5cc234d24771ebf1b17ecbb556da62db",
+  "Lab1_LedSwitch.hex": "bfa6e92635deb9ccf23605db12bc7be7",
+  "Lab2.hex": "98b06a9c4e2d555b0e2bf45864266638",
+  "Lcd_Demo.hex": "aef7dc2e42981944829c3b4e291359f9",
+  "Mux4_Demo.hex": "72abfc23b02cc3f5567130db03a83b64",
+  "Pwm_Demo.hex": "26dfdf732c56fa7bdcaae05ed77d2d60",
+  "Task1.hex": "99437e695fd25fb340041117b14fee2c",
+  "Task2.hex": "ad023cded4811665dcc6fc2e1fe2f03d",
+  "Timer0_Interrupt.hex": "5ed819ec9016927d3b20dba4c52046c8",
+  "Uart_Demo.hex": "1123e193112c79127408e2336d5011c5"
+ },
+ "frozen": {
+  "Task1.hex": "c87140f8824b23ebf3ccf28a610e86f5",
+  "Task2.hex": "6418f6256b7116b45d7758d365f35725"
+ }
+}

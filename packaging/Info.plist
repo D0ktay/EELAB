@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleName</key>
+	<string>EELAB</string>
+	<key>CFBundleDisplayName</key>
+	<string>EELAB</string>
+	<key>CFBundleIdentifier</key>
+	<string>app.eelab.EELAB</string>
+	<key>CFBundleExecutable</key>
+	<string>EELAB</string>
+	<key>CFBundleIconFile</key>
+	<string>EELAB</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>__VERSION__</string>
+	<key>CFBundleVersion</key>
+	<string>__VERSION__</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>tr</string>
+	<key>CFBundleGetInfoString</key>
+	<string>EELAB — EE321 Mikroişlemciler için kod + devre laboratuvarı</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>11.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.education</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSSupportsAutomaticTermination</key>
+	<false/>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>EELAB projelerinizi Belgeler/EELAB klasöründe saklar.</string>
+</dict>
+</plist>

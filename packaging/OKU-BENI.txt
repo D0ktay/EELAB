@@ -1,0 +1,84 @@
+EELAB — EE321 Mikroişlemciler için kod + devre laboratuvarı
+==========================================================
+
+Gereksinim: macOS 11 (Big Sur) veya sonrası; Intel ya da Apple Silicon Mac.
+Xcode, Python, Homebrew vb. kurmanız GEREKMEZ; hepsi uygulamanın içindedir.
+İnternet bağlantısı gerekmez.
+
+
+KURULUM
+-------
+EELAB Apple tarafından onaylanmış (notarize) bir uygulama değildir. Bu yüzden
+macOS ilk açılışta "açılamıyor / geliştirici doğrulanamadı" uyarısı verebilir.
+Aşağıdaki yollardan BİRİNİ kullanın.
+
+1) Önerilen yol — kurulum betiği
+   a. EELAB.dmg dosyasını çift tıklayıp açın.
+   b. Terminal'i açın (Uygulamalar > İzlenceler > Terminal).
+   c. Şu satırı yazıp Enter'a basın:
+
+        bash /Volumes/EELAB/kur.sh
+
+   Betik EELAB'ı Uygulamalar klasörüne kopyalar (yetkiniz yoksa kendi
+   ~/Applications klasörünüze), macOS'un "internetten indirildi" işaretini
+   kaldırır ve uygulamayı açar.
+   (Zip ile indirdiyseniz: zip'i açın, Terminal'e "bash " yazıp kur.sh dosyasını
+   Terminal penceresine sürükleyin ve Enter'a basın.)
+
+2) Elle kurup macOS'tan izin vermek
+   a. EELAB.app'i Uygulamalar klasörüne sürükleyin ve çift tıklayın.
+   b. macOS 15 (Sequoia) ve sonrası: uyarıyı kapatın, Sistem Ayarları >
+      Gizlilik ve Güvenlik bölümünün altında "EELAB engellendi" satırındaki
+      "Yine de Aç" düğmesine basın, parolanızı girin.
+      macOS 11–14: EELAB'a Control tuşuna basılıyken tıklayın (ya da sağ tık) >
+      Aç > Aç.
+
+3) Terminal'le elle
+        xattr -dr com.apple.quarantine /Applications/EELAB.app
+   ardından EELAB'ı normal şekilde açın.
+
+Kur.command dosyasına çift tıklamak da 1. yolu çalıştırır; ancak macOS bu
+dosyayı da engelleyebilir — o durumda 1. yoldaki Terminal komutunu kullanın.
+
+
+KULLANIM
+--------
+EELAB açılınca varsayılan tarayıcınızda http://127.0.0.1:8321/ adresinde açılır
+(port doluysa 8322–8399 arası). Dock'taki EELAB simgesine tıklamak tarayıcı
+sekmesini yeniden açar. Menü: Tarayıcıda Aç (⌘O), Çalışma Klasörünü Göster,
+Tanılama, Günlüğü Göster, Çık (⌘Q). Tarayıcı sekmesi kapandıktan 15 dakika sonra
+EELAB kendiliğinden kapanır.
+
+Projeleriniz:      ~/Documents/EELAB/   (Projelerim, Ornekler, Teslim)
+Günlük dosyası:    ~/Library/Logs/EELAB/server.log
+İlk açılışta macOS, Belgeler klasörüne erişim izni isteyebilir: "İzin Ver" deyin.
+
+
+SORUN GİDERME
+-------------
+- EELAB menüsü > Tanılama: sürüm, işlemci, derleyici durumu ve örnek derleme
+  denetimini gösterir. "Panoya Kopyala" ile kopyalayıp yardım isterken gönderin.
+- Apple Silicon Mac'te derleyici çalışmazsa EELAB Rosetta 2 kurmanızı önerebilir:
+        softwareupdate --install-rosetta --agree-to-license
+- Uygulama hiç açılmıyorsa Terminal'de şunu deneyin ve çıktıyı gönderin:
+        /Applications/EELAB.app/Contents/MacOS/EELAB --print-config
+
+
+KALDIRMA
+--------
+        bash /Volumes/EELAB/kaldir.sh
+Uygulamayı ve ~/Library altındaki EELAB ayar/günlük klasörlerini siler.
+~/Documents/EELAB içindeki projeleriniz SİLİNMEZ.
+
+
+BİLİNEN DURUM
+-------------
+Apple Silicon: denenmedi. Bu sürüm Intel bir Mac'te üretildi ve test edildi;
+Apple Silicon (arm64) bileşenleri yalnız statik olarak denetlendi. Apple
+Silicon'da sorun yaşarsanız Tanılama çıktısını gönderin.
+
+
+LİSANSLAR
+---------
+EELAB; SDCC ve gputils (GNU GPL v2), CPython (PSF) içerir. Lisans metinleri ve
+kaynak adresleri: EELAB.app/Contents/Resources/LICENSES/

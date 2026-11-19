@@ -1,0 +1,24 @@
+EELAB üçüncü taraf bileşenleri ve kaynak adresleri
+================================================
+
+EELAB paketi aşağıdaki açık kaynak yazılımları değiştirilmeden, yalnız yeniden
+derlenerek içerir. Kaynak kodları aşağıdaki adreslerden alınabilir; derleme adımları
+EELAB kaynak ağacındaki packaging/build_toolchain.sh ve packaging/fetch_python.sh
+dosyalarındadır (sürümler ve sha256 değerleri packaging/versions.json içinde).
+
+SDCC 4.5.0 (Small Device C Compiler) — GNU GPL v2 (SDCC-COPYING.txt)
+  https://sourceforge.net/projects/sdcc/files/sdcc/4.5.0/sdcc-src-4.5.0.tar.bz2
+  Pakette: toolchain/bin/sdcc, toolchain/cpp/{cpp,cc1} (sdcpp), toolchain/include,
+  toolchain/lib, toolchain/nonfree (PIC aygıt başlıkları/kütüphaneleri; lisans
+  koşulları dosyaların başlığında yazılıdır). SDCC'nin ürettiği kod GPL kapsamında değildir.
+
+gputils 1.5.2 — GNU GPL v2 (gputils-COPYING.txt)
+  https://sourceforge.net/projects/gputils/files/gputils/1.5.0/gputils-1.5.2.tar.bz2
+  Pakette: toolchain/bin/gpasm, toolchain/bin/gplink, toolchain/gpheader, toolchain/lkr
+
+Boost 1.86.0 (yalnız derleme anında başlık dosyaları) — Boost Software License 1.0
+  https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.bz2
+
+CPython 3.12 (python-build-standalone) — PSF License (CPython-LICENSE.txt; gömülü
+  üçüncü taraf kütüphanelerin lisansları da bu dosyadadır)
+  https://github.com/astral-sh/python-build-standalone/releases

@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>EELAB</title>
+<meta name="description" content="EELAB — EE321 Mikroişlemciler için kod + devre laboratuvarı">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='2' width='60' height='60' rx='13' fill='%23142850'/%3E%3Cpath d='M8 54h48' stroke='%231c5a1c' stroke-width='4'/%3E%3Crect x='14' y='12' width='36' height='36' rx='3' fill='%23c9c7a4' stroke='%237a1414' stroke-width='2.5'/%3E%3Cg fill='%23e11313'%3E%3Cpath d='M19 17h9v3h-9zM19 28h8v3h-8zM19 39h9v3h-9zM18 18h3v23h-3zM35 17h9v3h-9zM35 28h8v3h-8zM35 39h9v3h-9zM34 18h3v23h-3z'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{font:13px -apple-system,"Segoe UI",Tahoma,sans-serif;color:#1b1b1b;background:#6d7178;display:flex;gap:6px;padding:6px}
+.win{display:flex;flex-direction:column;background:#f0f0f0;border:1px solid #3c4046;border-radius:6px;overflow:hidden;min-width:0}
+#mc{flex:0 0 42%}#pr{flex:1}
+.title{color:#fff;padding:5px 10px;font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;display:flex;align-items:center;gap:8px}
+.title>span{flex:1;overflow:hidden;text-overflow:ellipsis}
+.title button{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;padding:0 7px;font-size:11px;line-height:16px}
+#mc .title{background:linear-gradient(#b3282d,#8c1c20)}
+.tb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:5px 8px;background:#e4e4e4;border-bottom:1px solid #bdbdbd}
+button,select{font:inherit;font-size:12px;padding:4px 9px;border:1px solid #9a9a9a;border-radius:4px;background:linear-gradient(#fff,#e6e6e6);cursor:pointer;color:#1b1b1b}
+button:active{background:#d4d4d4}button:disabled{opacity:.45;cursor:default}
+button.go{background:linear-gradient(#4fa24f,#2f7d2f);color:#fff;border-color:#256325;font-weight:600}
+.sep{width:1px;height:18px;background:#b5b5b5}
+.cfg{font-size:11px;padding:4px 10px;background:#fbf7dc;border-bottom:1px solid #d8d2a5;color:#4a4520}
+.cfg select{font-size:11px;padding:1px 4px}.cfg .warn{color:#b02a00}
+.dtb{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:4px 8px;background:#e9edf4;border-bottom:1px solid #bdc4d0}
+.dtb button{padding:2px 8px;font-size:11.5px}
+.dtb .dst{font:11px Menlo,Consolas,monospace;color:#334;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:120px}
+.findbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:3px 8px;background:#f3f3f3;border-bottom:1px solid #ccc;font-size:12px}
+.findbar input{font:12px Menlo,Consolas,monospace;padding:2px 5px;border:1px solid #aaa;border-radius:3px;width:120px}.findbar input[type=checkbox]{width:auto;margin:0}
+.findbar input.fg{width:56px}.findbar button{padding:1px 7px;font-size:11.5px}.findbar label{display:flex;align-items:center;gap:2px;font-size:11px}
+.findbar .fcnt{color:#666;font-size:11px;min-width:56px}.findbar .fsp{flex:1}
+.ed{flex:1;display:flex;min-height:0;background:#fff;font:12.5px/18px Menlo,Consolas,monospace}
+.gw{flex:0 0 54px;overflow:hidden;background:#ececec;border-right:1px solid #d0d0d0;user-select:none;-webkit-user-select:none;cursor:pointer;position:relative}
+#gut{color:#8a8a8a;text-align:right;will-change:transform}
+#gut .g{height:18px;padding-right:6px;position:relative;white-space:pre}
+#gut .g i{position:absolute;left:4px;top:4px;width:10px;height:10px;border-radius:50%}
+#gut .g:hover i{background:#f1b5b5}
+#gut .g.bp i{background:#d11a1a}#gut .g.bpx i{border:2px solid #d11a1a;background:#fff}
+#gut .g.gx::after{content:'';position:absolute;left:15px;top:4px;border:5px solid transparent;border-left:8px solid #e0a000}
+#gut .g.bm::after{content:attr(data-bm);position:absolute;right:1px;top:1px;font:bold 9px/10px -apple-system,sans-serif;color:#fff;background:#2f6fd0;border-radius:2px;padding:0 3px}
+#gut .g.ge{background:#f4c7c7;color:#a00}#gut .g.gw{background:#f6e6ae}
+#gut.plain{white-space:pre;padding:8px 6px 8px 0}
+.edw{position:relative;flex:1;overflow:hidden;background:#fff;min-width:0}
+#hl{position:absolute;left:0;top:0;padding:0 100vw 0 8px;white-space:pre;tab-size:4;-moz-tab-size:4;pointer-events:none;min-width:100%;color:#10102a;will-change:transform}
+#hl .l{height:18px}
+#hl .l.x{background:#fff1a0}#hl .l.le{background:#fde3e3}#hl .l.lw{background:#fff6d6}#hl .l.lb{background:#fbe4e4}#hl .l.lf{background:#cfe3ff}
+#hl mark{background:#ffe066;color:inherit;border-radius:2px}
+.t-kw{color:#00007f;font-weight:700}.t-type{color:#0000c8;font-weight:700}.t-com{color:#008000;font-style:italic}.t-str{color:#a31515}.t-num{color:#9b2d9b}
+.t-pp{color:#7a4c00}.t-sfr{color:#8b0000}.t-fn{color:#005fa3}.t-ins{color:#00007f;font-weight:700}.t-dir{color:#7a4c00;font-weight:600}.t-lbl{color:#b35c00;font-weight:700}
+#code{position:absolute;left:0;top:0;width:100%;height:100%;border:0;outline:0;resize:none;margin:0;padding:8px;font:inherit;white-space:pre;overflow:auto;tab-size:4;-moz-tab-size:4;color:transparent;background:transparent;caret-color:#10102a}
+#code::selection{background:rgba(47,111,208,.3);color:transparent}
+#code.plain{color:#10102a}#code.plain::selection{color:#10102a}
+.split{flex:0 0 5px;background:#c9c9c9;cursor:row-resize;border-top:1px solid #b5b5b5}
+.split:hover{background:#9db8e0}
+.btm{flex:0 0 auto;height:210px;display:flex;flex-direction:column;min-height:70px}
+.tabs{display:flex;gap:2px;background:#dcdcdc;padding:3px 6px 0;border-bottom:1px solid #bdbdbd;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:0 0 auto;white-space:nowrap}
+.tabs button{border-radius:4px 4px 0 0;border-bottom:none;padding:2px 10px;font-size:11px;background:#e9e9e9}
+.tabs button.on{background:#fff;font-weight:600}
+.panes{flex:1;overflow:auto;background:#fff;min-height:0;position:relative}
+#msg{font:11.5px/17px Menlo,Consolas,monospace;padding:0;white-space:normal}
+#mlines{padding:4px 10px;white-space:pre-wrap}
+#mfilt{display:flex;gap:12px;align-items:center;padding:2px 10px;background:#f4f4f4;border-bottom:1px solid #ddd;font:11.5px -apple-system,"Segoe UI",sans-serif;position:sticky;top:0;z-index:1}
+#mfilt label{display:flex;align-items:center;gap:3px}#mfilt input{margin:0}
+#mtab{border-collapse:collapse;width:100%;font:11.5px/16px Menlo,Consolas,monospace}
+#mtab th{position:sticky;top:21px;background:#fafafa;color:#666;font-weight:600;text-align:left;padding:1px 8px;border-bottom:1px solid #ddd;white-space:nowrap}
+#mtab td{padding:0 8px;border-bottom:1px solid #f0f0f0;white-space:nowrap;cursor:default}#mtab td.mt{white-space:normal;width:100%}
+#mtab tr[data-line]{cursor:pointer}#mtab tr:hover td{background:#f3f6fb}
+#mtab tr.e td{color:#c01515}#mtab tr.w td{color:#8a6100}#mtab tr.h td{color:#1d4f91}#mtab tr.d td{color:#17701c}
+#mtab td.ic{width:18px;padding:0 2px 0 8px;text-align:center}
+#msg .e{color:#c01515}#msg .ok{color:#17701c;font-weight:600}#msg .w{color:#8a6100}
+#msg div[data-line]{cursor:pointer}#msg div[data-line]:hover{text-decoration:underline;background:#f3f6fb}
+.sbar{display:flex;gap:14px;font-size:11px;padding:2px 10px;background:#e4e4e4;border-top:1px solid #bdbdbd;color:#444}
+.dbg{font:11px/16px Menlo,Consolas,monospace}
+.dbg-sw{position:sticky;top:0;z-index:1;background:#f4f4ea;padding:3px 8px;border-bottom:1px solid #ddd;display:flex;gap:8px;align-items:center}
+.dbg-sw span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dbg-sw button{padding:0 7px;font-size:11px}
+.dbg-pane{padding:4px 8px}
+.dbg-t{border-collapse:collapse;width:100%}.dbg-t th,.dbg-t td{border-bottom:1px solid #eee;padding:1px 6px;text-align:left;white-space:nowrap}
+.dbg-t th{color:#666;font-weight:600;background:#fafafa;position:sticky;top:23px}
+.dbg-t td.n{color:#333;font-weight:600}.dbg-t td.a{color:#888}
+.dbg .chg,.dbg tr.chg td{color:#d00000;font-weight:700}
+.dbg .dbg-e{cursor:pointer}.dbg .dbg-e:hover,.dbg td.bits:hover{background:#eef4ff;cursor:pointer}
+.dbg-g{border-collapse:collapse}.dbg-g td{padding:0 3px;text-align:center;min-width:20px}.dbg-g th{color:#999;font-weight:normal;padding:0 4px}
+.dbg-core{margin:2px 0 4px}.dbg-core .kv{display:inline-block;margin-right:14px}.dbg-core b{color:#555;margin-right:4px}
+.dbg-core .v.dbg-e{padding:0 2px;border-bottom:1px dotted #99a}
+.dbg-flags .f{display:inline-block;padding:0 5px;margin:0 3px 4px 0;border:1px solid #ccc;border-radius:3px;color:#999}
+.dbg-flags .f.on{background:#1d3fd8;color:#fff;border-color:#1d3fd8}
+.dis tr.pc td{background:#fff1a0}.dis td.bpc{color:#d11a1a;width:16px;cursor:pointer;text-align:center}.dis td.bpc:hover{background:#fbe4e4}
+.dis td.ln{color:#2f6fd0;cursor:pointer}.dis td.op{color:#999}
+.dbg-lst{margin:0;white-space:pre;font-size:11px}
+.dbg-in{width:80px;font:inherit;padding:0 2px}
+.dbg-wbar{display:flex;gap:6px;align-items:center;margin:2px 0 6px;flex-wrap:wrap}.dbg-wbar input{flex:0 1 240px;font:inherit;padding:2px 4px}
+.dbg-wbar button{padding:1px 8px;font-size:11px}.dbg-lbl{font-family:-apple-system,"Segoe UI",sans-serif;color:#555;min-width:150px}.dbg-wsel{min-width:130px}
+.dbg-t tr.sel td{background:#dcebff}.dbg-sw .kv{display:inline-flex;gap:4px;align-items:center;margin-right:12px}.dbg-sw .kv b{color:#555}.dbg-sw .dbg-in{width:70px}
+.dbg-wbar button.on{background:linear-gradient(#cfe0fb,#b2cdf5);border-color:#2f6fd0}
+.dbg select{font-size:10.5px;padding:0 2px}.dbg button.x{padding:0 5px;font-size:10px}
+.dbg-note{color:#777;font-size:10.5px;margin-top:4px;font-family:-apple-system,"Segoe UI",sans-serif}
+.dbg-h{font-weight:600;margin:4px 0 2px;font-family:-apple-system,"Segoe UI",sans-serif}
+.dbg-stack{margin:0 0 6px;padding-left:22px}
+.props{position:absolute;z-index:5;background:#f7f7f7;border:1px solid #7a7a7a;border-radius:5px;box-shadow:0 3px 12px rgba(0,0,0,.3);padding:8px;font-size:12px;width:200px}
+.props b{display:block;margin-bottom:6px}.props label{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:6px}
+.props input{width:110px;font:inherit;padding:2px 4px}.props div{text-align:right}
+.dlg{position:fixed;left:50%;top:32%;transform:translate(-50%,-50%);z-index:20;display:none;width:340px}
+.dlg input,.dlg select{width:190px}.dlg .desc{font-size:11px;color:#555;text-align:left;margin:-2px 0 6px;min-height:14px}
+.dlg pre{font:11px/16px Menlo,monospace;white-space:pre-wrap;text-align:left;margin:0 0 8px;max-height:300px;overflow:auto}
+.dlg label.cb{justify-content:flex-start}.dlg label.cb input{width:auto}
+.mmenu{display:flex;padding:0 4px;background:#fbfbfb;border-bottom:1px solid #d4d4d4}
+.mmenu .mi{border:1px solid transparent;border-radius:0;background:none;padding:2px 9px;font-size:12px;line-height:16px}
+.mmenu .mi:hover,.mmenu .mi.on{background:#fbe3e4;border-color:#d79a9c}
+.ctxm .it.hd{color:#7a1d20;font-weight:600;padding-left:10px}.ctxm .it.hd:hover{background:none;border-color:transparent}
+.cfg{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.cfg #cfgw{cursor:pointer;flex:1;min-width:0}.cfg #cfgw:hover{text-decoration:underline dotted}
+.cfg .cfgb{padding:0 7px;font-size:11px;line-height:16px}
+.pdlg.mdlg{width:min(580px,96vw);max-height:92vh;display:flex;flex-direction:column}
+.mdlg .pdlg-b{overflow:auto}
+.mdlg fieldset{border:1px solid #c9c9c9;margin:0 0 8px;padding:4px 8px 2px}.mdlg legend{color:#7a1d20;padding:0 4px}
+.mdlg .pdlg-b label>span{white-space:nowrap}
+.mdlg .pdlg-b select.w{width:270px;max-width:60%}
+.epw{font:11.5px Menlo,Consolas,monospace;margin:2px 0 4px}.epw b{color:#7a1d20;font-size:13px}.epw code{color:#666;margin:0 6px}.epw span{font-family:-apple-system,"Segoe UI",sans-serif;color:#555}
+.epwarn div{color:#8a4b00;font-size:11px;margin:2px 0}
+.pm table{border-collapse:collapse;width:100%;margin-bottom:6px;background:#fff;border:1px solid #c9c9c9}
+.pm td{padding:2px 6px;border-bottom:1px solid #eee;white-space:nowrap}.pm td:first-child{width:100%}.pm tr.cur td:first-child{font-weight:600;color:#7a1d20}
+.pm td a{color:#1d4f91;cursor:pointer;margin-left:6px;font-size:11px}.pm td a:hover{text-decoration:underline}.pm td a.del{color:#b02a00}
+.pm .pm-h{font-weight:600;margin:4px 0 3px}.pm .desc{font-size:11px;color:#666}
+.ac{position:absolute;z-index:8;width:340px;background:#fff;border:1px solid #8a8a8a;box-shadow:2px 3px 9px rgba(0,0,0,.28);font:12px/17px Menlo,Consolas,monospace}
+.ac-l{max-height:198px;overflow-y:auto}
+.ac-i{display:flex;gap:6px;align-items:center;padding:0 6px 0 3px;cursor:default;white-space:nowrap}
+.ac-i.s{background:#2f6fd0;color:#fff}.ac-i.s .at{color:#dfe8f8}
+.ac-i i{flex:0 0 14px;height:14px;font:bold 9.5px/14px -apple-system,sans-serif;font-style:normal;text-align:center;border-radius:2px;color:#fff;background:#888}
+.ac-i .an{flex:1;overflow:hidden;text-overflow:ellipsis}.ac-i .an b{font-weight:700}.ac-i .at{color:#888;font-size:11px;font-family:-apple-system,"Segoe UI",sans-serif}
+.ak-fn,.ak-ufn{background:#005fa3!important}.ak-sfr{background:#8b0000!important}.ak-bit,.ak-sbit{background:#b35c00!important}.ak-kw,.ak-ins{background:#00007f!important}
+.ak-const{background:#9b2d9b!important}.ak-var,.ak-lbl{background:#2b7a2b!important}.ak-dir{background:#7a4c00!important}
+.ac-d{border-top:1px solid #ddd;background:#fffbe6;padding:3px 6px;font:11px/15px -apple-system,"Segoe UI",sans-serif;color:#333;white-space:normal}
+.ac-d code{display:block;font:11px Menlo,Consolas,monospace;color:#00007f;margin-bottom:1px}
+.ctip{position:absolute;z-index:7;background:#fffbe6;border:1px solid #b8a95a;padding:1px 6px;font:11px Menlo,Consolas,monospace;color:#00007f;white-space:nowrap;pointer-events:none;box-shadow:1px 2px 5px rgba(0,0,0,.2)}
+#libp{height:100%}
+.lib{display:flex;height:100%;font-size:12px}
+.lib-l{flex:0 0 210px;display:flex;flex-direction:column;border-right:1px solid #d6d6d6;min-height:0}
+.lib-l input{margin:4px;font:inherit;padding:2px 5px;border:1px solid #aaa;border-radius:3px}
+.lib-tree{flex:1;overflow-y:auto;padding-bottom:4px}
+.lib-g{padding:1px 4px;font-weight:600;color:#7a1d20;cursor:pointer;display:flex;gap:4px;user-select:none;-webkit-user-select:none}.lib-g:hover{background:#f6eaea}
+.lib-tw{width:10px;color:#777}.lib-n{margin-left:auto;color:#999;font-weight:400;font-size:10.5px}
+.lib-i{padding:0 4px 0 6px;cursor:default;font:11.5px/17px Menlo,Consolas,monospace;display:flex;gap:3px;white-space:nowrap}.lib-i:hover{background:#eef4ff}.lib-i.s{background:#2f6fd0;color:#fff}
+.lib-ck{flex:0 0 12px;color:#17701c;font-weight:700}.lib-i.s .lib-ck{color:#fff}
+.lib-r{flex:1;overflow:auto;padding:6px 10px;min-width:0}
+.lib-h{font:600 13px Menlo,Consolas,monospace;color:#005fa3;margin-bottom:3px}.lib-used{font:11px -apple-system,sans-serif;color:#17701c;margin-left:8px}
+.lib-sig,.lib-ex{font:11.5px/16px Menlo,Consolas,monospace;background:#f6f6f6;border:1px solid #e1e1e1;padding:3px 6px;margin:2px 0 6px;white-space:pre-wrap}
+.lib-sig{color:#00007f}.lib-desc{margin:2px 0 6px;line-height:1.45}.lib-k{font-weight:600;color:#555;font-size:11px}
+.lib-note{color:#777;font-size:11px;margin:4px 6px}.lib-btns{display:flex;gap:6px;margin-top:4px}.lib-btns button{padding:2px 10px;font-size:11.5px}
+.st-row{display:flex;align-items:center;gap:8px;margin:3px 0;font-family:-apple-system,"Segoe UI",sans-serif}.st-row b{width:34px}
+.st-bar{flex:0 1 320px;height:12px;background:#e9e9e9;border:1px solid #c4c4c4;border-radius:2px;overflow:hidden}
+.st-bar i{display:block;height:100%;background:linear-gradient(#5fae5f,#2f7d2f)}.st-bar i.mid{background:linear-gradient(#f0c050,#c89200)}.st-bar i.hi{background:linear-gradient(#e46a6a,#b51e1e)}
+.st-v{color:#333}
+.st-kinds{display:flex;flex-wrap:wrap;gap:12px;margin:4px 0;font-family:-apple-system,"Segoe UI",sans-serif;color:#444}
+.st-k i{display:inline-block;width:9px;height:9px;margin-right:4px;border-radius:2px;background:#888}
+.k-user i,.st-t tr.k-user .st-w i{background:#2f6fd0}.k-lib i,.st-t tr.k-lib .st-w i{background:#b35c00}.k-sys i,.st-t tr.k-sys .st-w i{background:#8a8a8a}.k-data i,.st-t tr.k-data .st-w i{background:#9b2d9b}
+.st-cfg{color:#7a1d20;font-family:Menlo,Consolas,monospace}
+.st-t{margin-bottom:6px}.st-t .st-w{width:30%}.st-t .st-w i{display:block;height:8px;border-radius:1px}
+svg{width:100%;height:100%;user-select:none;-webkit-user-select:none}
+#pr button svg{width:16px;height:16px;flex:0 0 auto}#pr .ptab svg{width:14px;height:14px}#pr .plogo{width:15px;height:15px}
+/* ===== Proteus 8 "Schematic Capture" look (right pane) ===== */
+#pr{--paper:#e0e0d0;--sheet:#0000c0;--chrome:#e9f3f8;--chrome2:#e1ebf0;--bar1:#e2f0f8;--bar2:#dcedf7;--line:#a7bccb;--hot:#cce8f6;--hotb:#3c8fc4;--modeon:#adccde;--selbg:#0078d7;--pl:#004cd9;--tabtx:#224b6a;
+ font-family:"Segoe UI",Tahoma,-apple-system,sans-serif;background:var(--chrome);border-color:#5d6168}
+#pr .ptitle{background:#fff;color:#1b1b1b;font-weight:400;font-size:12px;border-bottom:1px solid #d6d6d6;padding:4px 8px}
+#pr .ptitle .plogo{flex:0 0 auto}
+#pr .pmenu{display:flex;gap:0;padding:0 4px;background:#fff;border-bottom:1px solid #dadada}
+#pr .pmenu .mi{border:1px solid transparent;border-radius:0;background:none;padding:2px 8px;font-size:12px;line-height:16px;color:#1b1b1b}
+#pr .pmenu .mi:hover,#pr .pmenu .mi.on{background:var(--hot);border-color:#99d1ff}
+#prtb{gap:2px;padding:2px 4px;background:linear-gradient(var(--bar1),var(--bar2));border-bottom:1px solid var(--line)}
+#prtb .tg{display:inline-flex;align-items:center;gap:1px;padding:0 5px 0 3px;border-right:1px solid #b9cfdd;margin-right:2px}
+#prtb .tg:last-child{border-right:0}
+#pr .ib{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;padding:0;border:1px solid transparent;border-radius:2px;background:none}
+#pr .ib:hover:not(:disabled){background:var(--hot);border-color:#99d1ff}
+#pr .ib.on{background:var(--modeon);border-color:var(--hotb)}
+#pr .ib.na{opacity:.35;cursor:default}#pr .ib.na:hover{background:none;border-color:transparent}
+#pr .ib:disabled svg{filter:grayscale(1);opacity:.6}
+#prtb select{height:22px;padding:0 4px;border-radius:2px;border:1px solid #acacac;background:#fff;font-size:11.5px;margin:0 2px;max-width:128px}
+#prtb .pf{font-size:11px;color:#333;gap:4px}#prtb .pf b{font-weight:600;color:#000}
+#pr .ptabs{display:flex;align-items:flex-end;padding:3px 4px 0;background:var(--chrome2);border-bottom:1px solid #9fb6c6}
+#pr .ptab{display:inline-flex;align-items:center;gap:5px;padding:3px 12px 3px 8px;font-size:11.5px;color:var(--tabtx);border:1px solid #9fb6c6;border-bottom:0;border-radius:3px 3px 0 0;background:#fff;position:relative;top:1px}
+#pr .body{flex:1;display:flex;min-height:0;background:var(--chrome)}
+#pr .modes{flex:0 0 28px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 1px;background:linear-gradient(90deg,var(--bar1),var(--bar2));border-right:1px solid var(--line);overflow-y:auto;scrollbar-width:none}
+#pr .modes::-webkit-scrollbar{display:none}
+#pr .mbtn{flex:0 0 auto;width:24px;height:22px;padding:0;display:flex;align-items:center;justify-content:center;border:1px solid transparent;border-radius:2px;background:none}
+#pr .mbtn:hover{background:var(--hot);border-color:#99d1ff}#pr .mbtn.on{background:var(--modeon);border-color:#6f9fbf}
+#pr .mbtn.na svg{opacity:.38;filter:grayscale(.6)}#pr .modes .msep{flex:0 0 1px;width:20px;background:#a7bccb;margin:3px 0}
+#pr .modes.off{opacity:.5;pointer-events:none}
+#pr .side{flex:0 0 150px;display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--chrome)}
+#pr .ovw{flex:0 0 96px;margin:3px;border:1px solid #7a8a96;background:var(--paper);cursor:crosshair}
+#pr .ovs{width:100%;height:100%;display:block}
+#pr .ovpaper{fill:var(--paper)}#pr .ovview{fill:none;stroke:#00c000;vector-effect:non-scaling-stroke;stroke-width:1.5px}
+#pr .dev{flex:1;display:flex;flex-direction:column;min-height:0;margin:0 3px;border:1px solid #7a8a96;background:#fff;font-size:11px}
+#pr .osel-h{display:flex;align-items:center;gap:2px;padding:2px;background:linear-gradient(var(--bar1),var(--bar2));border-bottom:1px solid var(--line)}
+#pr .osel-h button{width:18px;height:18px;padding:0;font:bold 11px "Segoe UI",Tahoma,sans-serif;border:1px solid #00309a;border-radius:2px;background:var(--pl);color:#fff}
+#pr .osel-h button:hover{background:#2a6cf0}
+#pr .osel-h span{flex:1;font:bold 11px "Segoe UI",Tahoma,sans-serif;letter-spacing:.3px;padding-left:6px;color:#1a1a1a}
+#pr .osel-q{display:block;margin:2px;padding:1px 4px;font:11px "Segoe UI",Tahoma,sans-serif;border:1px solid #c3c3c3;border-radius:0;width:calc(100% - 4px);box-sizing:border-box}
+#pr .osel-list{flex:1;overflow-y:auto;min-height:0}
+#pr .osel-list div{padding:0 5px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;font-family:"Segoe UI",Tahoma,sans-serif}
+#pr .osel-list div:hover{background:#e5f3ff}#pr .osel-list div.s{background:var(--selbg);color:#fff}
+#pr .osel-none{display:block;padding:4px 6px;color:#888;font-style:normal}
+#pr .dev.off{opacity:.55;pointer-events:none}
+#pr .rotb{display:flex;align-items:center;gap:1px;padding:2px 3px}
+#pr .rotb.tag svg [stroke="#0040da"]{stroke:#e00000}#pr .rotb.tag svg [fill="#0040da"]{fill:#e00000}
+#pr .rotb #rang{min-width:26px;height:18px;line-height:16px;text-align:center;font:11px "Segoe UI",Tahoma,sans-serif;border:1px solid #9a9a9a;background:#fff;margin:0 2px}
+#pr .sch{flex:1;background:var(--paper);min-width:0;position:relative;overflow:hidden}
+#pr .sch>svg{display:block}
+#pr g.part.sel :is(line,rect,path,circle,polyline,polygon,ellipse):not([class$=hit]):not([stroke=none]){stroke:#ff0000}
+#pr g.part.sel text{fill:#ff0000}
+#pr .regbar{display:flex;gap:10px;align-items:center;padding:1px 8px;font-size:11px;background:#fbfbfb;border-top:1px solid var(--line);white-space:nowrap;overflow:hidden}
+#pr .regbar b{font-weight:600;color:#333}
+#pr .reg{font-family:Consolas,Menlo,monospace;font-size:11px;color:#000;overflow:hidden;text-overflow:ellipsis}
+#inst{flex:0 0 auto;max-height:45%;overflow:auto;border-top:1px solid #1f1f1f;background:#3a3a3a}
+#pr .sim{display:flex;align-items:center;gap:0;padding:0;background:#f0f0f0;border-top:1px solid var(--line);font-size:11px;height:26px;white-space:nowrap}
+#pr .sim>*{height:100%;display:flex;align-items:center;border-right:1px solid #c5c9cf;padding:0 6px}
+#pr .simc{gap:1px;padding:0 4px}#pr .simc .ib{width:22px;height:20px}
+#pr .simc .ib:disabled{opacity:.4}
+#pr .simc select{height:18px;padding:0 2px;font-size:10.5px;margin-left:4px;border-radius:2px;border:1px solid #acacac;background:#fff}
+#pr .pmsg{gap:5px;border:0;border-right:1px solid #c5c9cf;border-radius:0;background:none;font-size:11px;color:#1b1b1b;padding:0 8px;cursor:pointer;min-width:112px}
+#pr .pmsg:hover{background:var(--hot)}
+#pr .pmsg i{width:12px;height:12px;border-radius:50%;background:#9a9a9a;color:#fff;font:italic bold 9px/12px Georgia,serif;text-align:center}#pr .pmsg i::before{content:'i'}
+#pr .pmsg.w i{background:#2e9e2e}#pr .pmsg.e i{background:#d81e1e;font:bold 10px/12px Arial,sans-serif}#pr .pmsg.e i::before{content:'×'}#pr .pmsg.e span{color:#d81e1e}#pr .pmsg span{color:#555}#pr .pmsg.w span{color:#1b1b1b}
+#pr #st{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-family:"Segoe UI",Tahoma,sans-serif;color:#1b1b1b;display:block;line-height:26px}
+#pr #st.anim{font-family:Consolas,Menlo,monospace;font-size:11px}
+#pr .sheetn{color:#333}
+#pr .coord{font-family:Consolas,Menlo,monospace;min-width:170px;justify-content:flex-end;border-right:0;padding-right:2px;white-space:pre}
+#pr .unit{border-right:0;padding:0 8px 0 2px;color:#333}
+.ctxm{position:absolute;z-index:40;min-width:200px;padding:2px;background:#f2f2f2;border:1px solid #979797;box-shadow:2px 3px 6px rgba(0,0,0,.28);font:12px "Segoe UI",Tahoma,-apple-system,sans-serif;color:#1b1b1b}
+.ctxm .it{display:flex;justify-content:space-between;gap:18px;padding:3px 10px 3px 26px;cursor:default;position:relative;border:1px solid transparent;white-space:nowrap}
+.ctxm .it:hover{background:#d5e8f8;border-color:#a7cdee}.ctxm .it.off{color:#9a9a9a}.ctxm .it.off:hover{background:none;border-color:transparent}
+.ctxm kbd{font:inherit;color:#555}.ctxm .sep{height:1px;background:#d0d0d0;margin:3px 2px 3px 26px}
+.ctxm .subm{display:none;position:absolute;left:100%;top:-3px}.ctxm .it.sub:hover>.subm{display:block}
+.pdlg{width:300px;padding:0;background:#f0f0f0;border:1px solid #6f6f6f;border-radius:0;box-shadow:3px 4px 14px rgba(0,0,0,.35);font:12px "Segoe UI",Tahoma,-apple-system,sans-serif}
+.pdlg-t{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 4px 9px;background:#fff;border-bottom:1px solid #d6d6d6;font-size:12px}
+.pdlg-t button{border:0;background:none;padding:0 6px;font-size:12px;line-height:18px}.pdlg-t button:hover{background:#e81123;color:#fff}
+.pdlg-b{padding:8px 10px 4px}.pdlg .pdlg-b label{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:5px}
+.pdlg .pdlg-b input,.pdlg .pdlg-b select{width:150px;font:inherit;padding:2px 4px;border:1px solid #7a7a7a;border-radius:0}
+.pdlg .pdlg-b input[readonly]{background:#f6f6f6;color:#333}
+.pdlg-f{display:flex;justify-content:flex-end;gap:6px;padding:6px 10px 9px}
+.pdlg-f button,.pick .pdlg-f button{min-width:72px;border-radius:0;border:1px solid #adadad;background:#e1e1e1;padding:3px 10px}
+.pdlg-f button.def{border-color:#0078d7;box-shadow:inset 0 0 0 1px #0078d7}
+.pickbg{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center}
+.pick{width:min(860px,96vw);height:min(520px,92vh);display:flex;flex-direction:column;background:#f0f0f0;border:1px solid #6f6f6f;box-shadow:4px 6px 20px rgba(0,0,0,.4);font:12px "Segoe UI",Tahoma,-apple-system,sans-serif}
+.pick-b{flex:1;display:flex;gap:8px;padding:8px 10px;min-height:0}
+.pick label{display:block;margin:4px 0 2px}.pick label.cb{display:flex;gap:4px;align-items:center}
+.pick-l{flex:0 0 190px;display:flex;flex-direction:column;min-height:0}
+.pick-l input[type=search]{font:inherit;padding:2px 4px;border:1px solid #7a7a7a}
+.pick-cat{flex:1;min-height:60px;overflow-y:auto;background:#fff;border:1px solid #828790}.pick-cat.sm{flex:0 0 auto;min-height:0;color:#777}
+.pick-cat div{padding:0 4px;line-height:17px;cursor:default;white-space:nowrap}.pick-cat div.s{background:#0078d7;color:#fff}
+.pick-m{flex:1;display:flex;flex-direction:column;min-width:0}
+.pick-res{flex:1;overflow:auto;background:#fff;border:1px solid #828790}
+.pick-res table{border-collapse:collapse;width:100%}.pick-res th{position:sticky;top:0;background:linear-gradient(#fff,#ececec);border-right:1px solid #d5d5d5;border-bottom:1px solid #d5d5d5;text-align:left;font-weight:400;padding:2px 6px}
+.pick-res td{padding:1px 6px;white-space:nowrap;cursor:default}.pick-res td:last-child{white-space:normal}
+.pick-res tr:hover td{background:#e5f3ff}.pick-res tr.s td{background:#0078d7;color:#fff}
+.pick-r{flex:0 0 230px;display:flex;flex-direction:column}
+.pick-pv{flex:1;background:#c8c8aa;border:1px solid #828790;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6px}
+.pick-pv svg{max-width:100%;max-height:100%;width:auto;height:auto}
+.pick-model{margin-top:6px;padding:4px 6px;border:1px solid #828790;background:#fff;color:#1d4f91;font-size:11px;min-height:22px}
+#toast{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:#222;color:#fff;padding:14px 20px;border-radius:8px;max-width:520px;display:none;text-align:center;line-height:1.5;z-index:30}
+#printArea{display:none}
+@media print{
+ @page{size:landscape;margin:10mm}
+ html,body{height:auto;background:#fff;display:block;padding:0}
+ body>*:not(#printArea){display:none!important}
+ #printArea{display:block!important}
+ #printArea svg{width:100%;height:auto;max-height:180mm}
+}
+#clkwarn{padding:3px 10px;background:#fff1a8;border-bottom:1px solid #d8c24a;color:#6a4b00;font-size:11.5px}
+.setp{padding:8px 12px;font:12px -apple-system,"Segoe UI",sans-serif}.setp fieldset{border:1px solid #c9c9c9;margin:0 0 8px;padding:4px 10px 6px}.setp legend{color:#7a1d20;padding:0 4px}
+.setp label{display:flex;align-items:center;gap:8px;margin:3px 0}.setp label>span{min-width:190px}.setp input[type=text],.setp select{width:150px;font:inherit;padding:2px 4px}
+.setp .bad{color:#b02a00;font-size:11px}.setp .libl{columns:2;font:11.5px Menlo,Consolas,monospace}.setp .libl div{white-space:nowrap}
+.ppop{position:fixed;z-index:25;min-width:240px;max-width:min(560px,92vw);background:#f2f2f2;border:1px solid #6f6f6f;box-shadow:3px 4px 12px rgba(0,0,0,.35);font:11px Consolas,Menlo,monospace;color:#111}
+.ppop-t{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 2px 8px;background:#fff;border-bottom:1px solid #d0d0d0;cursor:move;font:12px "Segoe UI",Tahoma,sans-serif;user-select:none}
+.ppop-t button{border:0;background:none;padding:0 6px;line-height:16px}.ppop-t button:hover{background:#e81123;color:#fff}
+.ppop-b{padding:4px 6px;max-height:60vh;overflow:auto;white-space:pre}.ppop-b table{border-collapse:collapse}.ppop-b td,.ppop-b th{padding:0 4px;text-align:center;font-weight:normal}.ppop-b td.pcr{background:#fff1a0}
+.ppop-b .top{font-weight:700;color:#00007f;margin-bottom:3px}.ppop-b td.l{text-align:left}.ppop-b td.ch{color:#d00000;font-weight:700}
+.ppop.paused-only{display:none}body.paused .ppop.paused-only{display:block}
+.ptab-slog td{padding:1px 6px}.sl{max-height:50vh;overflow:auto;font:11.5px Consolas,Menlo,monospace;background:#fff;border:1px solid #ccc;padding:3px 6px;white-space:pre-wrap;text-align:left}.sl div.w{color:#8a6100}.sl div.e{color:#c01515}
+</style></head><body>
+
+<div class="win" id="mc">
+ <div class="title"><span id="mct">EELAB Kod — mikroC uyumlu</span><button id="about" title="Hakkında / Tanılama">EELAB ⓘ</button></div>
+ <div class="mmenu" id="mmenu"><button class="mi" data-m="file" data-i18n="menu.file">Dosya</button><button class="mi" data-m="edit" data-i18n="menu.edit">Düzen</button><button class="mi" data-m="view" data-i18n="menu.view">Görünüm</button><button class="mi" data-m="proj" data-i18n="menu.project">Proje</button><button class="mi" data-m="run" data-i18n="menu.run">Çalıştır</button><button class="mi" data-m="tools" data-i18n="menu.tools">Araçlar</button><button class="mi" data-m="help" data-i18n="menu.help">Yardım</button></div>
+<div id="clkwarn" hidden></div>
+ <div class="tb">
+  <select id="ws" title="Çalışma klasörü" hidden></select>
+  <select id="files" title="Proje dosyası"></select>
+  <button id="new" data-i18n="btn.new">Yeni</button><button id="save" title="Ctrl+S" data-i18n="btn.save">Kaydet</button>
+  <button id="build" class="go" title="Ctrl+F9 / ⌘B" data-i18n="btn.build">⚙ Derle</button>
+  <select id="snip" title="Kod parçacığı ekle (⌃J)"><option value="">Parçacık…</option></select>
+  <button id="reveal" title="Kod ve HEX dosyalarının olduğu klasörü Finder'da aç" data-i18n="btn.openFolder">Klasörü aç</button>
+  <button id="teslim" title="Kod + HEX + devre + şema içeren teslim zip'i oluştur" data-i18n="btn.submission">Teslim paketi</button>
+ </div>
+ <div class="cfg"><span><span data-i18n="lbl.device">Aygıt</span>:</span> <b>P16F628A</b> · Fosc: <select id="fosc" title="Proje saat frekansı (komut çevrimi = Fosc/4)"><option value="4000000">4 MHz</option><option value="8000000">8 MHz</option><option value="20000000">20 MHz</option></select> · <span id="cfgw" title="Config word — tıkla: Projeyi Düzenle (⇧⌘E)">Osilatör: <b>INTOSC</b> · MCLR: <b>Kapalı</b> · WDT: <b>Kapalı</b> · LVP: <b>Kapalı</b></span><button id="cfgedit" class="cfgb" title="Projeyi Düzenle: saat, osilatör, WDT, MCLR, PWRT, BOR, LVP, kod koruması (⇧⌘E)">Config bitleri…</button></div>
+ <div class="dtb" id="dtb" hidden>
+  <button id="dstart" title="Hata ayıklayıcıyı başlat (F9)" data-i18n="item.startDebug">Hata ayıklayıcıyı başlat</button><button id="dstop" title="Hata ayıklayıcıyı durdur (Ctrl+F2)">■</button>
+  <span class="sep"></span>
+  <button id="dgo" title="Çalıştır / devam (F6)">▶ Devam</button><button id="dpause" title="Duraklat (F6)">⏸</button>
+  <span class="sep"></span>
+  <button id="dinto" title="Adım: satıra / fonksiyonun içine (F7)" data-i18n="btn.stepInto">↧ Adım</button>
+  <button id="dover" title="Üzerinden atla: çağrıyı tek adımda geç (F8)" data-i18n="btn.stepOver">↷ Üzerinden</button>
+  <button id="dout" title="Dışarı çık: fonksiyondan dön (Ctrl+F8)" data-i18n="btn.stepOut">↥ Dışarı</button>
+  <button id="dcur" title="İmlecin olduğu satıra kadar çalıştır (F4)" data-i18n="btn.runToCursor">⇥ İmlece kadar</button>
+  <button id="dins" title="Tek makine komutu yürüt" data-i18n="btn.instruction">Komut</button>
+  <span class="sep"></span>
+  <button id="dbp" title="İmlecin satırında breakpoint aç/kapa (F5) — oluğa tıklamak da olur">● BP</button>
+  <button id="dbpx" title="Tüm breakpoint'leri kaldır">BP temizle</button>
+  <span class="dst" id="dst"></span>
+ </div>
+ <div id="findh"></div>
+ <div class="ed"><div class="gw" title="Breakpoint için tıkla"><div id="gut"></div></div><div class="edw"><div id="hl"></div><textarea id="code" spellcheck="false" wrap="off" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea></div></div>
+ <div class="split" id="split" title="Sürükleyerek boyutlandır"></div>
+ <div class="btm" id="btm">
+  <div class="tabs" id="tabs"><button data-p="msg" class="on" data-i18n="tab.messages">Mesajlar</button><button data-p="lib" title="Desteklenen mikroC kütüphane fonksiyonları, sabitler ve SFR'ler" data-i18n="tab.library">Kütüphane</button><button data-p="setp" data-i18n="tab.settings">Proje Ayarları</button></div>
+  <div class="panes" id="panes"><div id="msg" data-p="msg"><div id="mfilt" hidden></div><table id="mtab" hidden></table><div id="mlines"></div></div><div id="libp" data-p="lib" style="display:none"></div><div id="setp" class="setp" style="display:none"></div><div id="dbgp"></div></div>
+ </div>
+ <div class="sbar"><span id="pos">Satır 1, Sütun 1</span><span id="langl"></span><span id="romi"></span></div>
+</div>
+
+<div class="win" id="pr">
+ <div class="title ptitle"><svg class="plogo" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M3 3h10v10H3z" fill="#f4f0c8" stroke="#8b1a1a"/><path d="M1 6h2M1 10h2M13 6h2M13 10h2" stroke="#1b6f1b"/><path d="M6 6h4v4H6z" fill="#e11313"/></svg><span id="prt">lab3 - EELAB - Schematic Capture</span></div>
+ <div class="pmenu" id="pmenu"></div>
+ <div class="tb" id="prtb">
+  <span class="tg"><button id="pdsopen" class="ib" title="Import Proteus project (.pdsprj) as a design"></button><input id="pdsfile" type="file" accept=".pdsprj" hidden>
+  <select id="circs" title="Open a saved design"><option value="">Open Design…</option></select>
+  <button id="csave" class="ib" title="Save Design (to the work folder as .json)"></button>
+  <button id="cdef" class="ib" title="Reload the default design (lab3)"></button>
+  <select id="cexp" title="Export / print the schematic"><option value="">Export…</option><option value="png">Export Bitmap (PNG 2x)</option><option value="svg">Export SVG</option><option value="print">Print…</option></select></span>
+  <span class="tg"><button id="tgrid" class="ib" title="Toggle Grid (G)"></button><button id="tzin" class="ib" title="Zoom In"></button><button id="tzout" class="ib" title="Zoom Out"></button><button id="tfit" class="ib" title="Zoom To View Entire Sheet"></button></span>
+  <span class="tg"><button id="tundo" class="ib" title="Undo (⌘Z)"></button><button id="tredo" class="ib" title="Redo (⇧⌘Z)"></button>
+  <button id="tcut" class="ib" title="Cut To Clipboard (⌘X)"></button><button id="tcopy" class="ib" title="Copy To Clipboard (⌘C)"></button><button id="tpaste" class="ib" title="Paste From Clipboard (⌘V)"></button><button id="tdel" class="ib" title="Delete Selected (Delete)"></button></span>
+  <span class="tg"><button id="twire" class="ib" title="Wire Mode (W) — or just click from pin to pin in any mode"></button><button id="tpick" class="ib" title="Pick Devices (P)"></button></span>
+  <span class="tg pf"><span title="PIC Program File (Edit Component › Program File)">Program File: <b id="pf">(none)</b></span><button id="loadhex" class="ib" title="Load Program File — a HEX built by another compiler (e.g. real mikroC)"></button><input id="hexfile" type="file" accept=".hex" hidden></span>
+ </div>
+ <div class="ptabs"><span class="ptab on"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 3h12v10H2z" fill="#fff" stroke="#2e5aa8"/><path d="M4 8h3M9 8h3" stroke="#1b6f1b"/><path d="M7 6h2v4H7z" fill="#f4f0c8" stroke="#8b1a1a"/></svg>Schematic Capture</span></div>
+ <div class="body">
+  <div class="modes" id="modes"></div>
+  <div class="side">
+   <div class="ovw" id="ovw" title="Overview — click or drag to pan, wheel to zoom"></div>
+   <div class="dev" id="devs"></div>
+   <div class="rotb" id="rotb"><button id="trot" class="ib" title="Rotate Clockwise (R)"></button><button id="trotc" class="ib" title="Rotate Anti-Clockwise"></button><span id="rang" title="Rotation angle for the next placement">0</span><button id="tmx" class="ib na" title="X-Mirror (not available in EELAB)"></button><button id="tmy" class="ib na" title="Y-Mirror (not available in EELAB)"></button></div>
+  </div>
+  <div class="sch"><svg id="svg" viewBox="0 0 1080 670"></svg></div>
+ </div>
+ <div class="regbar" id="regbar" hidden><b>PIC CPU Registers - <span id="regid">U1</span></b><span class="reg" id="reg"></span></div>
+ <div id="inst" hidden></div>
+ <div class="sim">
+  <span class="simc"><button id="play" class="ib" title="Run the simulation"></button><button id="pstep" class="ib" title="Advance the simulation by one animation time step (50 ms)"></button><button id="pause" class="ib" title="Pause the simulation"></button><button id="stop" class="ib" title="Stop the simulation"></button>
+  <select id="spd" title="Simulation speed (multiple of real time)"><option value="0.01">0.01x</option><option value="0.1">0.1x</option><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="2">2x</option><option value="5">5x</option><option value="10">10x</option><option value="100">100x</option></select></span>
+  <button id="pmsg" class="pmsg" title="Simulation messages — click to show them in the Messages tab"><i></i><span>No Messages</span></button>
+  <span id="st">Ready</span>
+  <span class="sheetn">Root sheet 1</span>
+  <span class="coord" id="coord" title="Cursor position in thou (th); one grid square = 100th, Y increases upwards">x:      +0.0  y:      +0.0</span><span class="unit">th</span>
+ </div>
+</div>
+<div id="toast"></div>
+<input id="mcppifile" type="file" accept=".mcppi,.c,.h,.asm" multiple hidden>
+<div id="printArea"></div>
+<div class="props dlg" id="newdlg"><b>Yeni dosya</b>
+ <label>Ad <input id="nname" placeholder="ör. Task3" maxlength="40"></label>
+ <label>Dil <select id="nlang"><option value="c">C (mikroC uyumlu)</option><option value="asm">Assembly (MPASM uyumlu)</option></select></label>
+ <label id="ntplr" hidden>Şablon <select id="ntpl"></select></label>
+ <div class="desc" id="ndesc"></div>
+ <label>Fosc <select id="nfosc"><option value="4000000">4 MHz</option><option value="8000000">8 MHz</option><option value="20000000">20 MHz</option></select></label>
+ <div><button id="nok" class="go">Oluştur</button> <button id="ncancel">İptal</button></div></div>
+<div class="props dlg" id="tdlg"><b>Teslim paketi</b>
+ <label>Ad Soyad <input id="tad" maxlength="60"></label>
+ <label>Öğrenci no <input id="tno" maxlength="20"></label>
+ <label class="cb"><input type="checkbox" id="tsch" checked> Şema (PNG + SVG) ekle</label>
+ <div class="desc" id="tdesc"></div>
+ <div><button id="tok" class="go">Oluştur</button> <button id="tcancel">İptal</button></div></div>
+<div class="pickbg" id="epbg" hidden><div class="pdlg mdlg" role="dialog" aria-label="Projeyi Düzenle">
+ <div class="pdlg-t"><span id="eptitle">Projeyi Düzenle</span><button id="epx" title="Kapat (Esc)">✕</button></div>
+ <div class="pdlg-b">
+  <fieldset><legend>MCU ve saat</legend>
+   <label><span>MCU adı:</span><input value="P16F628A" readonly></label>
+   <label><span>Saat frekansı [MHz]:</span><select id="epfosc"><option value="4000000">4.000000</option><option value="8000000">8.000000</option><option value="20000000">20.000000</option></select></label>
+  </fieldset>
+  <fieldset id="eplibf" hidden><legend data-i18n="d.eplibLegend">Kütüphane zamanlaması</legend>
+   <label class="cb" style="justify-content:flex-start"><input type="checkbox" id="eplib" style="width:auto"><span data-i18n="d.libModelLabel" style="min-width:0">mikroC tam zamanlama</span></label>
+   <div class="epwarn"><div data-i18n="d.libModelNote" style="color:#555">Delay_ms/Delay_us/Lcd gerçek mikroC çevrim sayılarıyla derlenir (yeniden derle).</div></div>
+  </fieldset>
+  <fieldset><legend>Yapılandırma bitleri — CONFIG (0x2007)</legend><div id="epcfg"></div></fieldset>
+  <div class="epw"><span>Config word:</span> <b id="epword">0x3F10</b><code id="epbits"></code><span id="epsrc"></span></div>
+  <div class="epwarn" id="epwarn"></div>
+ </div>
+ <div class="pdlg-f"><button id="epdef" style="margin-right:auto" title="Fosc'a göre varsayılan (C) / kaynaktaki __CONFIG (assembly)">Varsayılan</button><button id="epok" class="def">Tamam</button><button id="epcancel">İptal</button></div>
+</div></div>
+<div class="pickbg" id="pmbg" hidden><div class="pdlg mdlg pm" role="dialog" aria-label="Proje Yöneticisi">
+ <div class="pdlg-t"><span>Proje Yöneticisi — <span id="pmws"></span></span><button id="pmx" title="Kapat (Esc)">✕</button></div>
+ <div class="pdlg-b"><div class="pm-h">Kaynak dosyalar</div><table id="pmsrc"></table><div class="pm-h">Devreler (bu klasördekiler)</div><table id="pmcirc"></table>
+  <div class="desc">Silinen dosyalar EELAB veri klasöründeki <b>.Silinenler</b> klasörüne taşınır; oradan geri alınabilir. Kod dosyası silinince/yeniden adlandırılınca HEX'i de birlikte taşınır.</div></div>
+ <div class="pdlg-f"><button id="pmreveal" style="margin-right:auto">Klasörü Finder'da aç</button><button id="pmclose" class="def">Kapat</button></div>
+</div></div>
+
+<div class="pickbg" id="optbg" hidden><div class="pdlg" role="dialog" aria-label="Seçenekler" style="width:420px">
+ <div class="pdlg-t"><span id="opttitle" data-i18n="dlg.options">Seçenekler</span><button id="optx" title="Esc">✕</button></div>
+ <div class="pdlg-b">
+  <label><span id="optlangl" data-i18n="dlg.uiLang">Arayüz dili (mikroC paneli)</span><select id="optlang"><option value="tr">Türkçe</option><option value="en">English</option></select></label>
+  <label class="cb" style="justify-content:flex-start"><input type="checkbox" id="optclk" style="width:auto"><span id="optclkl" data-i18n="d.clockLink">Proteus saatini mikroC proje saatine bağla</span></label>
+  <div class="epwarn"><div id="optclkn" data-i18n="d.clockLinkNote" style="color:#555">Kapalıysa PIC parçasının "Processor Clock Frequency" değeri simülasyonu, proje saati yalnız derleyiciyi yönetir.</div></div>
+ </div>
+ <div class="pdlg-f"><button id="optok" class="def" data-i18n="btn.ok">Tamam</button><button id="optcancel" data-i18n="btn.cancel">İptal</button></div>
+</div></div>
+<div class="pickbg" id="animbg" hidden><div class="pdlg" role="dialog" aria-label="Animation Options" style="width:380px">
+ <div class="pdlg-t"><span>Animation Options</span><button id="animx" title="Esc">✕</button></div>
+ <div class="pdlg-b">
+  <label><span>Frames per Second:</span><input id="an_fps" type="text"></label>
+  <label><span>Timestep per Frame:</span><input id="an_ts" type="text" readonly></label>
+  <label><span>Single Step Time:</span><input id="an_ss" type="text"></label>
+  <label><span>Show Logic State of Pins?</span><select id="an_pins"><option value="1">Yes</option><option value="0">No</option></select></label>
+  <label><span>Show Wire Voltage by Colour?</span><select id="an_wv"><option value="0">No</option><option value="1">Yes</option></select></label>
+  <label><span>Show Wire Current with Arrows?</span><select id="an_wc"><option value="0">No</option><option value="1">Yes</option></select></label>
+  <div class="epwarn"><div id="an_err" style="color:#b02a00"></div></div>
+ </div>
+ <div class="pdlg-f"><button id="anim_ok" class="def">OK</button><button id="anim_cancel">Cancel</button></div>
+</div></div>
+<div class="pickbg" id="slbg" hidden><div class="pdlg" role="dialog" aria-label="Simulation Log" style="width:min(640px,94vw)">
+ <div class="pdlg-t"><span>Simulation Log</span><button id="slx" title="Esc">✕</button></div>
+ <div class="pdlg-b"><div class="sl" id="sllist"></div></div>
+ <div class="pdlg-f"><button id="slmsg" style="margin-right:auto">Messages tab</button><button id="slclear">Clear</button><button id="slclose" class="def">Close</button></div>
+</div></div>
+<div class="pickbg" id="lsbg" hidden><div class="pdlg" role="dialog" style="width:min(420px,94vw)">
+ <div class="pdlg-t"><span id="lstitle"></span><button id="lsx" title="Esc">✕</button></div>
+ <div class="pdlg-b"><input id="lsq" style="width:100%;margin-bottom:6px" placeholder="…"><div class="sl" id="lslist" style="font-family:Menlo,Consolas,monospace"></div></div>
+</div></div>
+<div id="popups"></div>
+<div class="props dlg" id="adlg"><b>EELAB — EE321 Mikroişlemciler için kod + devre laboratuvarı</b><pre id="ainfo"></pre><div><button id="aclose">Kapat</button></div></div>
+
+<script src="/js/pic.js"></script>
+<script src="/js/uart.js"></script>
+<script src="/js/i18n.js"></script>
+<script src="/js/keys.js"></script>
+<script src="/js/library.js"></script>
+<script src="/js/sim.js"></script>
+<script src="/js/editor.js"></script>
+<script src="/js/ide.js"></script>
+<script src="/js/debug.js"></script>
+<script src="/js/scope.js"></script>
+<script src="/js/isis.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const api=(p,b)=>fetch(p,b?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}:undefined).then(r=>r.json());
+async function apiOpt(p,b){try{const r=await fetch(p,b?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}:undefined);if(r.status==404)return null;const j=await r.json();return j&&j.error=='yok'?null:j;}catch(e){return null;}}
+const LS={get(k){try{let v=localStorage.getItem('eelab.'+k);if(v==null){const o=localStorage.getItem('ee321.'+k);if(o!=null){localStorage.setItem('eelab.'+k,o);localStorage.removeItem('ee321.'+k);v=o;}}return v;}catch(e){return null;}},
+ set(k,v){try{localStorage.setItem('eelab.'+k,v);}catch(e){}},del(k){try{localStorage.removeItem('eelab.'+k);}catch(e){}}};
+const FOSCS=[4000000,8000000,20000000];
+const T=(k,a)=>window.IDE&&IDE.ui?IDE.ui.t(k,a):k;
+const fmtHz=h=>h>=1e6?+(h/1e6).toFixed(6)+' MHz':+(h/1e3).toFixed(3)+' kHz';
+document.body.dataset.focus='ide';
+
+/* ================= PIC16F628A cekirdegi (js/pic.js) ================= */
+const PICM=typeof PIC!=='undefined'?PIC:(m=>m.require(m.require('path').resolve(m.path,'../js/pic.js')))(process.mainModule);
+const core=PICM.create({onPort:()=>portChg(),onUartTx:(b,c,f)=>uartTx(b,c,f),props:{wdtPeriod:0.018,eeWriteDelay:0.010,cfgDefault:0x3F6B,eePersist:true},onWarn:w=>coreWarn(w)});
+const P=core.P,step=core.step,parseHex=PICM.parseHex;
+const HAS_DBG=!!(core.bp&&core.runDbg&&window.DEBUG);
+function picReset(){core.reset();portChg();}
+function driveA(){let d=~P.ram[0x85]&0xDF&255;if(P.latA&0x10)d&=~0x10;return d;}
+function uartTx(b,c,f){if(typeof runner!=='undefined'&&runner&&runner.uartTx)runner.uartTx(b,c,f);}
+
+/* ================= simulasyon durumu ================= */
+let mode='stop',carry=0,last=0;   // stop | run | pause
+let model=null,runner=null,keyBtn={},ED=null,cname='lab3',cdirty=false,scope=null;
+const ANIM0={fps:20,step:0.05,pins:1,wv:0,wc:0};
+let anim=Object.assign({},ANIM0);
+try{Object.assign(anim,JSON.parse(LS.get('anim')||'{}'));}catch(e){}
+const circDoc=()=>Object.assign(ED.get(),{settings:{anim:Object.assign({},anim)}});
+function setAnim(a,quiet){const n=Object.assign({},ANIM0,a||{});n.fps=Math.max(1,Math.min(60,Math.round(+n.fps)||20));n.step=n.step>=1e-6&&n.step<=10?+n.step:0.05;anim=n;LS.set('anim',JSON.stringify(anim));
+ $('pstep').title='Advance the simulation by one animation time step ('+(anim.step*1000).toFixed(3)+' ms)';if(ED&&ED.setAnimOptions)try{ED.setAnimOptions(Object.assign({},anim));}catch(e){}if(!quiet&&ED)cdirty=true,ctitle();}
+if(core.attachRunner)core.attachRunner(()=>runner);
+const hx=v=>'0x'+v.toString(16).toUpperCase().padStart(2,'0');
+const hx3=v=>'0x'+v.toString(16).toUpperCase().padStart(3,'0');
+let fosc=4000000,sfosc=4000000,hexCfg=null;
+function inputs(r){if(!r)return;P.inA=r.inA;P.inB=r.inB;P.flB=runner&&runner.setPullups?0:(r.flB||0);}
+function portChg(){if(!runner)return;if(runner.setPullups)runner.setPullups((P.ram[0x81]&0x80)?0:0xFF,P.cyc);const d=core.drive();inputs(runner.port(d[0],d[1],d[2],d[3],P.cyc));mclrSync();}
+let lastMclr=1;
+function mclrSync(){if(!core.setMclr||!runner||!runner.pinLevel||!model||!model.pic)return;const lv=runner.pinLevel(model.pic.id,4)===0?0:1;if(lv!==lastMclr){lastMclr=lv;core.setMclr(lv);}}
+let evCyc={},evQ=[];
+function pressBtn(id,v){if(!runner||mode=='stop')return;
+ if(mode=='run'&&(evCyc[id]===P.cyc||evQ.some(e=>e[0]==id))){evQ.push([id,v]);return;}
+ evCyc[id]=P.cyc;inputs(runner.press(id,v,P.cyc));mclrSync();}
+function flushPress(){const q=evQ.splice(0),done=new Set();for(const e of q){if(done.has(e[0])){evQ.push(e);continue;}done.add(e[0]);pressBtn(e[0],e[1]);}}
+function setMode(m){
+ if(m=='run'&&mode=='stop'){
+  if(!ED){toast('The schematic library could not be loaded.');return;}
+  const c=ED.get();model=SIM.compile(c,LIB);
+  if(model.pic&&!P.loaded){const id=model.pic.id;model=null;toast('No program file for '+id+': build the code first (⌘B) or use Load Program File (HEX).');return;}
+  pmsgReset();
+  if(model.pics>1)plog([['w','The design contains more than one PIC; only '+model.pic.id+' is simulated.']],true);
+  keyBtn={};for(const b of model.buttons){const v=(b.value||'').trim().toUpperCase();if(/^[A-Z]/.test(v)&&!keyBtn[v[0]])keyBtn[v[0]]=b.id;}
+  runner=new SIM.Runner(model);lastMclr=1;sfosc=simClock();if(runner.setClock)runner.setClock(sfosc);P.fosc=sfosc;applyPicProps();picReset();carry=0;cpu=0;ED.setRun(true);if(isis)isis.setRun(true);
+  if(dbg){dbg.reset();dbg.markRun();}
+  instStart();
+ }
+ if(m=='stop'){runner=null;model=null;evQ=[];evCyc={};lastMclr=1;picReset();if(ED)ED.setRun(false);if(isis)isis.setRun(false);tempBp=[];syncBp();execAt(null);instStop();if(dbg)dbg.reset();}
+ if(m=='run'&&mode=='pause')execAt(null);
+ mode=m;document.body.classList.toggle('paused',m=='pause');$('play').disabled=m=='run';$('pause').disabled=m!='run';$('stop').disabled=m=='stop';
+ document.querySelectorAll('#twire,#trot,#trotc,#tdel,#tundo,#tredo,#tcut,#tpaste,#tpick,#csave,#cdef,#pdsopen,#circs').forEach(b=>b.disabled=m!='stop');
+ dbgButtons();if(m=='stop')dstText();
+}
+function useHex(text,name){const h=parseHex(text);if(!h.n){toast('No program found in the HEX file.');return null;}
+ core.load(h);$('pf').textContent=name;setMode('stop');hexCfg=PICM.decodeConfig(h.cfg);showCfg();return h;}
+function showCfg(){const c=hexCfg,on=v=>T(v?'cfg.on':'cfg.off'),e=$('cfgw');
+ const exp=typeof projCfgWord=='function'?projCfgWord():null,pend=exp!=null&&(storedCfg()!=null?(!P.loaded||!c||c.word!==exp):(P.loaded&&c&&dbgFile==cur&&c.word!==exp))?' · <span class="warn" title="'+T('d.cfgPendTitle')+'">⚠ '+T('d.cfgPend',[CFG.hex(exp)])+'</span>':'';
+ if(!c){e.innerHTML=(P.loaded?'Config word: <b>'+T('d.cfgNoHex')+'</b>':'Config word: <b>'+T('d.cfgNotBuilt')+'</b>')+pend;return;}
+ const w=c.intosc&&fosc!=4000000?' <span class="warn">⚠ '+T('d.intoscOnly')+'</span>':'';
+ e.innerHTML=T('cfg.oscillator')+': <b>'+c.osc+'</b>'+w+' · MCLR: <b>'+on(c.mclr)+'</b> · WDT: <b>'+on(c.wdt)+'</b> · PWRT: <b>'+on(c.pwrt)+'</b> · BOR: <b>'+on(c.boren)+'</b> · LVP: <b>'+on(c.lvp)+'</b> · <span title="Config word">0x'+c.word.toString(16).toUpperCase()+'</span>'+pend;}
+function setFosc(v,user){fosc=FOSCS.includes(+v)?+v:4000000;$('fosc').value=String(fosc);applyClock();
+ if(user&&cur){persist({fosc});log([['w','Fosc = '+fosc/1e6+' MHz ('+cur+'). '+(isAsm()?T('d.fo.asm'):T('d.fo.c'))]],true);}
+ if(window.renderSettings)renderSettings();}
+/* --- saat (D4, varsayılan ayrı): clockLink=true -> tek saat; false -> PIC parçasının Processor Clock Frequency'si simülasyonu, proje saati yalnız derleyiciyi yönetir --- */
+const clockLink=()=>LS.get('clockLink')==='1';
+const picPart=()=>ED?ED.parts().find(p=>p.type=='PIC16F628A'):null;
+const partHz=()=>{const pr=picPart(),h=pr&&pr.clock&&window.LIB&&LIB.parseEng?LIB.parseEng(pr.clock):NaN;return h>=32e3&&h<=20e6?h:NaN;};
+function simClock(){if(clockLink())return fosc;const h=partHz();return isNaN(h)?fosc:h;}
+function applyClock(){sfosc=simClock();P.fosc=sfosc;if(runner&&runner.setClock)runner.setClock(sfosc);clockBanner();showCfg();if(dbg)dbg.refresh(true);}
+function clockBanner(){const b=$('clkwarn');if(!b)return;const h=clockLink()?NaN:partHz();
+ if(!isNaN(h)&&Math.abs(h-fosc)>1){b.hidden=false;b.textContent=T('d.clkMismatch',[fmtHz(h),fmtHz(fosc)]);}else{b.hidden=true;b.textContent='';}}
+function picPropsNow(){const pr=picPart();return window.LIB&&LIB.picProps?LIB.picProps(pr,fosc):{wdtPeriod:0.018,eeWriteDelay:0.010};}
+function applyPicProps(){if(!core.setProps)return;const c=picPropsNow();core.setProps({wdtPeriod:c.wdtPeriod,eeWriteDelay:c.eeWriteDelay});}
+
+/* ================= sema (devre editoru) ================= */
+function digits(d){if(!model)return '';return ED.parts().filter(p=>p.type=='7SEG-MPX1-CC').sort((a,b)=>a.x-b.x||a.y-b.y).map(p=>{const c=SIM.decode(d.lit[p.id]);return c==' '?'-':c;}).join(' ');}
+let stOff=null;
+function render(){
+ const off=mode=='stop';
+ if(off||!runner){if(stOff!==true){stOff=true;$('st').textContent='Ready';$('st').className='';$('st').title='';$('reg').textContent='';$('regbar').hidden=true;}return;}
+ stOff=false;
+ const d=runner.frame(P.cyc);ED.paint(p=>runner.state(p,d));
+ const s=P.cyc*4/sfosc,hh=n=>String(Math.floor(n)).padStart(2,'0');
+ const tm=hh(s/3600)+':'+hh(s/60%60)+':'+(s%60).toFixed(6).padStart(9,'0');
+ const dg=digits(d);
+ const t=(mode=='run'?'ANIMATING: ':'PAUSED: ')+tm+(mode=='run'?' (CPU load '+Math.round(cpu)+'%)':'')+(dg?'   Displays: '+dg:'')+(d.conflict?'   ⚠ '+contText():'')+(P.sleep?'   SLEEP':'')+(slow&&mode=='run'?'   Simulation is not running in real time due to excessive CPU load.':'');
+ $('st').textContent=t;$('st').className='anim';$('st').title=t;
+ if(model.pic){const k=core.peek();$('regbar').hidden=false;$('regid').textContent=model.pic.id;
+  $('reg').textContent='PORTA='+hx(k.pa)+' TRISA='+hx(k.trisA)+'  PORTB='+hx(k.pb)+' TRISB='+hx(k.trisB)+'  W='+hx(k.w)+' PC='+hx(k.pc)+' INTCON='+hx(k.intcon);}else{$('reg').textContent='';$('regbar').hidden=true;}
+ if(scope)try{const ch=runner.rec&&runner.rec.channels&&runner.rec.channels.length;$('inst').hidden=!ch;if(ch)scope.frame();}catch(e){}
+}
+function contText(){let n=[];try{if(runner&&runner.contention)n=runner.contention()||[];}catch(e){}
+ return n.length?'Logic contention(s) detected on net'+(n.length>1?'s ':' ')+n.slice(0,3).join(', ')+(n.length>3?' …':''):'Logic contention';}
+let slow=0,lastDbg=0,cpu=0;
+function frame(ts){const dt=Math.min(60,ts-last);last=ts;
+ if(mode=='run'){const t0=performance.now();try{let n=dt*sfosc/4000*+$('spd').value+carry;const end=P.cyc+n;
+   if(model.pic){uartPump();
+    if(core.runDbg){const r=core.runDbg(end,40);
+     if(r.stop=='bp'){carry=0;pauseAt('bp');}
+     else if(r.done){carry=end-P.cyc;slow=Math.max(0,slow-1);}else{carry=0;slow=30;}}
+    else if(core.run(end,40)){carry=end-P.cyc;slow=Math.max(0,slow-1);}else{carry=0;slow=30;}}
+   else{P.cyc=end;carry=0;}}
+  catch(e){setMode('pause');plog([['e','Simulation error: '+e.message]]);}
+  drainWarn();
+  if(dt>0)cpu=cpu*0.85+0.15*Math.min(100,slow>=30?100:(performance.now()-t0)/dt*100);}
+ if(evQ.length&&mode!='stop')flushPress();
+ render();
+ if(mode!='stop'&&ts-lastDbg>200){lastDbg=ts;if(dbg&&mode=='run')dbg.refresh();dstText();renderPopups();}
+ requestAnimationFrame(frame);}
+
+function picFrameCfg(){const x=core.mem.read(0x99),brgh=(core.mem.read(0x98)>>2)&1;return {bitCyc:(brgh?4:16)*(x+1),dataBits:(core.mem.read(0x18)&0x40)?9:8};}
+function uartPump(){if(!runner||!runner.uartRx)return;
+ for(let i=0;i<64;i++){let b;
+  if(runner.uartRx.length>0){b=runner.uartRx(picFrameCfg());if(b==null)break;core.rxPush(typeof b=='object'?b.byte:b,typeof b=='object'?{ferr:b.ferr?1:0}:undefined);continue;}
+  b=runner.uartRx();if(b==null)break;core.rxPush(b);}}
+const hx4=v=>'0x'+(v&0xFFFF).toString(16).toUpperCase().padStart(4,'0');
+function coreWarn(w){simLogAdd('w','['+w.mod+'] PC='+hx4(w.pc)+'. '+w.text+' ['+(model&&model.pic?model.pic.id:'U1')+']');}
+function drainWarn(){if(!runner||!runner.warnings)return;try{for(const w of runner.warnings())simLogAdd('w','['+w.mod+'] '+w.text+' ['+w.id+']');}catch(e){}}
+function ctitle(){$('prt').textContent=cname+(cdirty?' *':'')+' - EELAB - Schematic Capture';}
+function loadCircuit(c,name,lines){
+ lines=lines||[];
+ if(mode!='stop')setMode('stop');
+ const parts=[],ids=new Set();
+ for(const p of (c.parts||[])){
+  if(!p||!LIB.types[p.type]){lines.push(['w','Unknown part skipped: '+(p&&p.id)+' ('+(p&&p.type)+')']);continue;}
+  if(ids.has(p.id)){lines.push(['w','Duplicate part reference skipped: '+p.id]);continue;}
+  ids.add(p.id);parts.push(Object.assign({rot:0,value:''},p));}
+ let wires=(c.wires||[]).filter(w=>w&&w.points&&w.points.length>1);
+ if(c.nets&&c.nets.length&&!wires.length&&SIM.overlaps(parts,LIB)){SIM.layout(parts,LIB);lines.push(['w','Parts overlapped and were re-placed automatically.']);}
+ if(c.nets&&c.nets.length){const r=SIM.route({parts,wires,nets:c.nets},LIB);wires=wires.concat(r.wires);
+  for(const w of r.warnings)lines.push(['w',w]);lines.push(['',c.nets.length+' nets auto-routed into '+r.wires.length+' wires.']);}
+ ED.load({version:1,parts,wires});cname=name;cdirty=false;ctitle();if(c.settings&&c.settings.anim)setAnim(c.settings.anim,true);applyClock();
+ return {parts:parts.length,wires:wires.length};
+}
+let circList=[];
+async function refreshCircs(){try{const r=await api('/api/circuits');const s=$('circs');s.innerHTML='<option value="">Open Design…</option>';circList=r.files||[];
+ for(const f of circList){const o=document.createElement('option');o.value=f;o.textContent=f;s.appendChild(o);}}catch(e){}}
+const askLose=()=>!cdirty||confirm('Unsaved changes to the design will be lost. Continue?');
+async function loadDefault(){
+ try{const c=await fetch('/circuits/lab3.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});
+  loadCircuit(c,'lab3');return true;}
+ catch(e){plog([['e','The default design (circuits/lab3.json) could not be loaded: '+e.message]],true);loadCircuit({parts:[],wires:[]},'untitled');return false;}}
+async function openCircuit(name,quiet){
+ const c=await api('/api/circuit?name='+encodeURIComponent(name));
+ if(c.error){if(!quiet)plog([['e','Could not open design: '+name+' ('+c.error+')']]);return false;}
+ const lines=[];loadCircuit(c,name,lines);LS.set('circuit',name);pmsgReset();
+ if(lines.length)plog(lines,true);return true;}
+async function initCircuit(){
+ const n=LS.get('circuit');await refreshCircs();
+ if(n&&circList.includes(n)&&await openCircuit(n,true))return;
+ await loadDefault();}
+async function importPds(f){
+ log([['','Reading Proteus project: '+f.name+' ...']]);pmsgReset();
+ let r;try{const buf=await f.arrayBuffer();r=await fetch('/api/import-pdsprj',{method:'POST',body:buf}).then(x=>x.json());}
+ catch(e){plog([['e','Server not reachable: '+e.message]]);return;}
+ if(!r||r.error){plog([['e',(r&&r.error)||'Could not read the Proteus project.']]);return;}
+ const lines=(r.warnings||[]).map(w=>['w',w]);
+ for(const u of r.unsupported||[])lines.push(['w','Unsupported part: '+(u.ref||'?')+' ('+(u.device||'?')+')'+(u.reason?' — '+u.reason:'')]);
+ const name=f.name.replace(/\.pdsprj$/i,'').replace(/[^A-Za-z0-9_\-]/g,'_').slice(0,40)||'proteus';
+ const k=loadCircuit(r,name,lines);cdirty=true;ctitle();
+ const meta=r.meta||{},ck=+meta.clock;
+ if(ck){if(FOSCS.includes(ck)){if(ck!==fosc){setFosc(ck,true);}lines.push(['ok','Processor Clock Frequency (CLOCK) from the Proteus project applied: Fosc = '+ck/1e6+' MHz.']);}
+  else lines.push(['w','Processor Clock Frequency '+ck+' Hz is not supported; Fosc unchanged (4/8/20 MHz).']);}
+ if(meta.program)lines.push(['','Program File in the Proteus project: '+meta.program+' (EELAB runs the HEX it builds itself).']);
+ lines.push(['ok','Loaded: '+f.name+' — '+k.parts+' parts, '+k.wires+' wires. Use "Save Design" to keep it.']);plog(lines);}
+async function saveCircuit(){
+ const n=(prompt('Save Design — name (letters, digits, _ and -):',cname)||'').trim();if(!n)return;
+ if(!/^[A-Za-z0-9_\-]{1,40}$/.test(n)){toast('Design names may only contain letters, digits, _ and -.');return;}
+ try{const r=await api('/api/circuit-save',{name:n,circuit:circDoc()});if(r.error){toast(r.error);return;}}
+ catch(e){toast('Save failed: '+e.message);return;}
+ cname=n;cdirty=false;ctitle();LS.set('circuit',n);await refreshCircs();linkCircuit();
+ log([['ok','Design saved: '+n+'.json']]);}
+function linkCircuit(){if(cur&&fileSet&&fileSet.circuit!==cname)persist({circuit:cname});}
+let isis=null,pmsgN={w:0,e:0},simLog=[];
+function pmsgShow(){const n=pmsgN.w+pmsgN.e,b=$('pmsg');b.className='pmsg'+(pmsgN.e?' e':n?' w':'');b.querySelector('span').textContent=pmsgN.e?pmsgN.e+' Error(s)':n?n+' Message(s)':'No Messages';}
+function pmsgReset(){pmsgN={w:0,e:0};simLog=[];pmsgShow();slRender();}
+function simLogAdd(sev,text){if(simLog.length>=500)simLog.shift();simLog.push({sev,text});if(sev=='w')pmsgN.w++;else if(sev=='e')pmsgN.e++;pmsgShow();if(!$('slbg').hidden)slRender();}
+function plog(lines,keep){for(const l of lines)if(l[0]=='w'||l[0]=='e')simLogAdd(l[0],l[1]);log(lines,keep);}
+function slRender(){const e=$('sllist');if(!e)return;e.textContent='';if(!simLog.length){e.textContent='No messages.';return;}for(const m of simLog){const d=document.createElement('div');d.className=m.sev;d.textContent=m.text;e.appendChild(d);}e.scrollTop=e.scrollHeight;}
+function slOpen(){slRender();$('slbg').hidden=false;}
+function simStep(){
+ if(mode=='run'){if(HAS_DBG)pauseAt('pause');else setMode('pause');return;}
+ if(mode=='stop'){setMode('run');if(mode!='run')return;setMode('pause');}
+ const end=P.cyc+sfosc/4*anim.step;
+ try{if(model&&model.pic){uartPump();
+   if(core.runDbg){const r=core.runDbg(end,500);if(r.stop=='bp'){afterStop('bp');return;}}else core.run(end,500);}
+  else P.cyc=end;}
+ catch(e){plog([['e','Simulation error: '+e.message]],true);}
+ if(HAS_DBG)afterStop('pause');drainWarn();}
+const fmtTh=v=>(v<0?'-':'+')+Math.abs(v).toFixed(1);
+function initEditor(){
+ if(!window.LIB||!window.SIM||!window.EDITOR){log([['e','Schematic files (js/library.js, js/sim.js, js/editor.js) could not be loaded.']],true);return;}
+ ED=EDITOR.create({svg:$('svg'),lib:LIB,sim:SIM,devList:$('devs'),toast,
+  onChange:()=>{cdirty=true;ctitle();clockBanner();},onPress:pressBtn,
+  onTool:(t,inf)=>{if(isis)isis.onTool(t,inf);},
+  onView:v=>{if(isis)isis.onView(v);},
+  onCursor:p=>{const gx=Math.round(p[0]/10)*10,gy=Math.round(p[1]/10)*10;$('coord').textContent='x: '+fmtTh(gx*10).padStart(9)+'  y: '+fmtTh(-gy*10).padStart(9);},
+  onPick:()=>{if(isis)isis.openPick();},onSelect:n=>{if(isis)isis.onSelect(n);},onGrid:g=>{$('tgrid').classList.toggle('on',g!='off');$('tgrid').title='Toggle Grid (G) — now: '+g;},
+  projectClock:()=>fosc,editContext:()=>({projectClockHz:fosc,cfgHint:hexCfg?'0x'+hexCfg.word.toString(16).toUpperCase().padStart(4,'0'):'0x3F6B'}),
+  componentInfo:part=>part.type!='PIC16F628A'?[]:[
+   {label:'Program File:',value:$('pf').textContent,title:'Build the code (Ctrl+F9) or use Load Program File (HEX)'},
+   ...(clockLink()?[{label:'Processor Clock Frequency:',value:fosc,options:FOSCS.map(f=>[f,f/1e6+'MHz']),apply:v=>setFosc(v,true),title:'Same as Fosc in the code pane; rebuild C code after changing it'}]:[]),
+   {label:'Program Configuration Word:',value:hexCfg?'0x'+hexCfg.word.toString(16).toUpperCase():'(not in HEX)'}]});
+ if(ED.onEditPart)ED.onEditPart(()=>{applyPicProps();applyClock();cdirty=true;ctitle();});
+ if(window.ISIS)try{
+  isis=ISIS.create({editor:ED,lib:LIB,toast,modes:'modes',overview:'ovw',menubar:'pmenu',angle:'rang',wireBtns:['twire'],
+   icons:{pdsopen:'imp',csave:'save',cdef:'def',tgrid:'grid',tzin:'zin',tzout:'zout',tfit:'zall',tundo:'undo',tredo:'redo',tcut:'cut',tcopy:'copy',tpaste:'paste',tdel:'del',
+    twire:'wire',tpick:'pick',loadhex:'hex',trot:'rotc',trotc:'rota',tmx:'mx',tmy:'my',play:'play',pstep:'step',pause:'pause',stop:'stop'},
+   toSVG:c=>EDITOR.toSVG(c,LIB,null,{bg:'#c8c8aa',margin:16}),rotBox:'rotb',gridBtn:'tgrid',
+   circuits:()=>circList,openDesign:async n=>{if(mode=='stop'&&askLose()&&await openCircuit(n))linkCircuit();},
+   importPds:()=>$('pdsopen').click(),saveDesign:()=>$('csave').click(),defaultDesign:()=>$('cdef').click(),
+   exportAs:k=>{if(k=='print')printSchema();else exportSchema(k);},loadHex:()=>$('loadhex').click(),
+   run:()=>$('play').click(),step:simStep,pause:()=>$('pause').click(),stop:()=>$('stop').click(),debugCmd,animOptions:animDialog,
+   about:()=>$('about').click(),
+   shortcuts:()=>toast('Schematic: P pick devices · W wire mode · R rotate · G grid · F5 centre · F6/F7 zoom in/out · F8 zoom all · Delete · Esc cancel · ⌘Z/⇧⌘Z undo/redo · ⌘C/⌘X/⌘V/⌘D/⌘A · Ctrl+E edit · Alt/Space+drag pan · wheel zoom · double-click = Edit Properties · Debug: Ctrl+F12 start · F10/F11 step.')});
+  isis.onView(ED.view());
+ }catch(e){isis=null;log([['w','Proteus-style toolbar could not be created: '+e.message]],true);}
+ $('pdsopen').onclick=()=>{if(askLose())$('pdsfile').click();};
+ $('pdsfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)importPds(f);};
+ $('circs').onchange=async e=>{const n=e.target.value;e.target.value='';if(n&&askLose()&&await openCircuit(n))linkCircuit();};
+ $('csave').onclick=saveCircuit;
+ $('cdef').onclick=async()=>{if(askLose()&&await loadDefault()){LS.del('circuit');pmsgReset();log([['','Default design (lab3) loaded.']]);}};
+ $('twire').onclick=()=>ED.setTool($('twire').classList.contains('on')?'select':'wire');
+ $('trot').onclick=()=>ED.rotate(1);$('trotc').onclick=()=>ED.rotate(3);$('tdel').onclick=()=>ED.del();
+ $('tmx').onclick=$('tmy').onclick=()=>toast('Mirroring is not available in EELAB — use rotation instead.');
+ $('tundo').onclick=()=>ED.undo();$('tredo').onclick=()=>ED.redo();
+ $('tcut').onclick=()=>ED.cut();$('tcopy').onclick=()=>ED.copy();$('tpaste').onclick=()=>ED.paste(null,true);
+ $('tpick').onclick=()=>{if(isis)isis.openPick();};$('tgrid').onclick=()=>{const g=ED.setGrid();$('tgrid').classList.toggle('on',g!='off');$('tgrid').title='Toggle Grid (G) — now: '+g;};$('tgrid').classList.add('on');
+ $('tfit').onclick=()=>ED.fit();$('tzin').onclick=()=>ED.zoom(1/1.25);$('tzout').onclick=()=>ED.zoom(1.25);
+ $('pstep').onclick=simStep;$('pmsg').onclick=slOpen;$('slx').onclick=$('slclose').onclick=()=>{$('slbg').hidden=true;};$('slclear').onclick=()=>{pmsgReset();};$('slmsg').onclick=()=>{$('slbg').hidden=true;showTab('msg');};
+ $('cexp').onchange=e=>{const v=e.target.value;e.target.value='';if(v=='png')exportSchema('png');else if(v=='svg')exportSchema('svg');else if(v=='print')printSchema();};
+ initCircuit();
+}
+
+/* ================= dis aktarma ================= */
+function schemaSVG(){
+ if(ED&&ED.exportSVG)try{const s=ED.exportSVG({bg:true});if(s)return s;}catch(e){}
+ const s=$('svg').cloneNode(true),vb=$('svg').viewBox.baseVal;
+ s.setAttribute('xmlns','http://www.w3.org/2000/svg');s.setAttribute('width',vb.width);s.setAttribute('height',vb.height);
+ const r=document.createElementNS('http://www.w3.org/2000/svg','rect');s.insertBefore(r,s.firstChild);
+ r.setAttribute('fill','#fff');r.setAttribute('x',vb.x);r.setAttribute('y',vb.y);r.setAttribute('width',vb.width);r.setAttribute('height',vb.height);
+ return new XMLSerializer().serializeToString(s);}
+async function schemaPNG(scale){
+ scale=scale||2;
+ if(ED&&ED.exportPNG)try{const u=await ED.exportPNG({scale});if(u)return u;}catch(e){}
+ const svg=schemaSVG(),img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);await img.decode();
+ const c=document.createElement('canvas');c.width=(img.naturalWidth||1080)*scale;c.height=(img.naturalHeight||670)*scale;
+ const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);return c.toDataURL('image/png');}
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
+async function exportFile(name,ext,data){
+ name=String(name||'cikti').replace(/[^A-Za-z0-9_\-]/g,'_').slice(0,40)||'cikti';
+ const r=await apiOpt('/api/export-file',Object.assign({name,ext},data));
+ if(r&&r.ok){log([['ok','Saved: '+r.path]],true);return r.path;}
+ const blob=data.base64?new Blob([Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0))],{type:'image/png'}):new Blob([data.text||''],{type:ext=='svg'?'image/svg+xml':'text/plain'});
+ download(name+'.'+ext,blob);log([['w','The server does not support export'+(r&&r.error?' ('+r.error+')':'')+'; the file was downloaded by the browser instead: '+name+'.'+ext]],true);return null;}
+async function exportSchema(kind){
+ try{if(kind=='svg')await exportFile(cname+'_sema','svg',{text:schemaSVG()});
+  else{const u=await schemaPNG(2);await exportFile(cname+'_sema','png',{base64:u.split(',')[1]});}}
+ catch(e){toast('Schematic export failed: '+e.message);}}
+function printSchema(){
+ let s;try{s=schemaSVG();}catch(e){toast('Could not prepare the schematic: '+e.message);return;}
+ $('printArea').innerHTML=s;const clean=()=>{$('printArea').innerHTML='';removeEventListener('afterprint',clean);};
+ addEventListener('afterprint',clean);window.print();setTimeout(clean,1500);}
+function teslimOpen(){
+ if(!cur){toast('Önce bir kod dosyası aç.');return;}
+ try{const s=JSON.parse(LS.get('student')||'{}');$('tad').value=s.ad||'';$('tno').value=s.no||'';}catch(e){}
+ $('tdesc').textContent='İçerik: '+cur+', '+cur.replace(/\.\w+$/,'')+'.hex, '+cname+'.json (devre)'+($('tsch').checked?', sema.png, sema.svg':'')+', BENIOKU.txt';
+ $('tdlg').style.display='block';$('tad').focus();}
+async function teslim(){
+ const ad=$('tad').value.trim(),no=$('tno').value.trim();LS.set('student',JSON.stringify({ad,no}));
+ $('tdlg').style.display='none';
+ if(dirty)await save();
+ const base=cur.replace(/\.\w+$/,'');
+ log([['','Teslim paketi hazırlanıyor ...']]);
+ try{const cr=await api('/api/circuit-save',{name:cname,circuit:circDoc()});if(!cr.error){cdirty=false;ctitle();}}catch(e){}
+ const body={name:base,files:[cur,base+'.hex',cname+'.json'],student:{ad,no},fosc,config:hexCfg?hexCfg.word:null,rom:lastRom,circuitName:cname};
+ if($('tsch').checked){try{body.svg=schemaSVG();body.pngBase64=(await schemaPNG(2)).split(',')[1];}catch(e){log([['w','Şema görüntüsü eklenemedi: '+e.message]],true);}}
+ const r=await apiOpt('/api/export',body);
+ if(!r){log([['e','Bu sunucu sürümü teslim paketini desteklemiyor.']],true);return;}
+ if(r.error){log([['e','Teslim paketi oluşturulamadı: '+r.error]],true);return;}
+ log([['ok','Teslim paketi oluşturuldu: '+r.path]],true);}
+
+/* ================= osiloskop / lojik analizor yuvasi ================= */
+function instStart(){
+ if(!window.SCOPE||!runner)return;
+ try{if(!scope)scope=SCOPE.create({mount:$('inst'),getRunner:()=>runner,getCyc:()=>P.cyc,getFosc:()=>fosc,save:(n,e,t)=>exportFile(n,e,{text:t})});scope.reset();}
+ catch(e){scope=null;plog([['w','The oscilloscope panel could not be opened: '+e.message]],true);}}
+function instStop(){if(scope)try{scope.reset();}catch(e){}$('inst').hidden=true;}
+
+/* ================= kod editoru ================= */
+let cur='',dirty=false,lastRom=null;
+function plainEditor(){
+ const ta=$('code'),gw=$('gut');ta.classList.add('plain');gw.classList.add('plain');$('hl').hidden=true;
+ const gut=()=>{const n=ta.value.split('\n').length;let s='';for(let i=1;i<=n;i++)s+=i+'\n';gw.textContent=s;gw.parentNode.scrollTop=ta.scrollTop;};
+ ta.addEventListener('input',()=>{gut();onEdit();});ta.addEventListener('scroll',()=>{gw.parentNode.scrollTop=ta.scrollTop;});
+ ta.addEventListener('keydown',e=>{if(e.key=='Tab'){e.preventDefault();document.execCommand('insertText',false,'\t');}});
+ const lineStart=n=>{let p=0;for(let i=1;i<n;i++){const j=ta.value.indexOf('\n',p);if(j<0)break;p=j+1;}return p;};
+ return {getValue:()=>ta.value,setValue(v){ta.value=v;gut();},setLang(){},getLang:()=>'c',
+  gotoLine(n){const a=lineStart(n),e=ta.value.indexOf('\n',a);ta.focus();ta.setSelectionRange(a,e<0?ta.value.length:e);ta.scrollTop=(n-5)*18;},
+  setMarkers(){},setBreakpoints(){},onBreakpointToggle(){},setExecLine(){},cursor:()=>({line:ta.value.slice(0,ta.selectionStart).split('\n').length,col:1}),
+  focus:()=>ta.focus(),openFind(){},insertSnippet(t){document.execCommand('insertText',false,t.replace('$0',''));}};}
+const ed=window.IDE?IDE.create({textarea:$('code'),gutter:$('gut'),highlight:$('hl'),findHost:$('findh'),
+  onChange:()=>onEdit(),onCursor:c=>{$('pos').textContent=T('status.line',[c.line,c.col]);},onSnippetKey:()=>$('snip').focus()}):plainEditor();
+ed.onBreakpointToggle(line=>toggleBp(line));
+function onEdit(){if(!dirty){dirty=true;title();}if(dbgInfo&&dbgFile==cur&&!dbgStale){dbgStale=true;dstText();}}
+function log(lines,keep){const m=$('mlines');if(!keep){m.innerHTML='';mcClear();}for(const [c,t,ln] of lines){const d=document.createElement('div');d.className=c;d.textContent=t;if(ln){d.dataset.line=ln;d.title=T('d.gotoLineTitle',[ln]);}m.appendChild(d);}$('msg').scrollTop=$('msg').scrollHeight;if(!keep||lines.some(l=>l[0]=='e'))showTab('msg');}
+$('msg').addEventListener('click',e=>{const d=e.target.closest('[data-line]');if(d)ed.gotoLine(+d.dataset.line,{select:true,flash:true});});
+$('msg').addEventListener('dblclick',e=>{const d=e.target.closest('[data-line]');if(d)ed.gotoLine(+d.dataset.line,{select:true,flash:true});});
+/* ---- Mesajlar penceresi (mikroC): Satır · Mesaj No. · Mesaj Metni · Birim ---- */
+let lastMc=null,mcFilt={e:1,w:1,h:1};
+try{Object.assign(mcFilt,JSON.parse(LS.get('mflt')||'{}'));}catch(e){}
+const MC_ICON={error:'⛔',warning:'⚠',hint:'ℹ',diagnostics:''},MC_CLS={error:'e',warning:'w',hint:'h',diagnostics:'d'};
+function mcClear(){lastMc=null;$('mtab').hidden=true;$('mfilt').hidden=true;$('mtab').textContent='';}
+function renderMc(mc){
+ if(mc)lastMc=mc;mc=lastMc;const tab=$('mtab'),fl=$('mfilt');
+ if(!mc){tab.hidden=true;fl.hidden=true;return;}
+ fl.hidden=false;fl.textContent='';
+ for(const [k,key,def] of [['e','filter.errors','Hatalar'],['w','filter.warnings','Uyarılar'],['h','filter.hints','İpuçları']]){
+  const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=!!mcFilt[k];
+  c.onchange=()=>{mcFilt[k]=c.checked?1:0;LS.set('mflt',JSON.stringify(mcFilt));renderMc();};
+  l.appendChild(c);l.appendChild(document.createTextNode(T(key)));fl.appendChild(l);}
+ tab.hidden=false;tab.textContent='';
+ const hr=tab.createTHead().insertRow();for(const k of ['','col.line','col.msgNo','col.msgText','col.unit']){const th=document.createElement('th');th.textContent=k?T(k):'';hr.appendChild(th);}
+ const tb=tab.createTBody();
+ for(const m of mc){const cls=MC_CLS[m.type]||'d';if(m.type=='error'&&!mcFilt.e||m.type=='warning'&&!mcFilt.w||m.type=='hint'&&!mcFilt.h)continue;
+  const tr=tb.insertRow();tr.className=cls;
+  const ic=tr.insertCell();ic.className='ic';ic.textContent=MC_ICON[m.type]||'';
+  tr.insertCell().textContent=m.line>0?m.line:'';tr.insertCell().textContent=m.no>0?m.no:'';
+  const tx=tr.insertCell();tx.className='mt';tx.textContent=IDE.outputs.mcText(m);tr.insertCell().textContent=m.unit||'';
+  if(m.line>0){tr.dataset.line=m.line;tr.title=T('d.gotoLineTitle',[m.line]);}}
+ $('msg').scrollTop=$('msg').scrollHeight;}
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',2600);}
+const isAsm=()=>/\.asm$/i.test(cur);
+function title(){$('mct').textContent=T(isAsm()?'d.mctAsm':'d.mctC')+' — '+cur+(dirty?' *':'');document.title=(dirty?'• ':'')+'EELAB — '+(cur||'');}
+function fillSnips(){const s=$('snip'),lg=isAsm()?'asm':'c';s.innerHTML='<option value="">'+T('d.snippets')+'</option>';
+ if(!window.IDE)return;IDE.snippets[lg].forEach(([n],i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=n;s.appendChild(o);});}
+$('snip').onchange=e=>{const i=e.target.value;e.target.value='';if(i===''||!window.IDE)return;ed.insertSnippet(IDE.snippets[isAsm()?'asm':'c'][+i][1]);};
+$('snip').addEventListener('keydown',e=>{if(e.key=='Escape')ed.focus();});
+async function listFiles(sel){const r=await fillFiles();
+ const last=LS.get('file');
+ sel=sel||(last&&r.files.includes(last)?last:r.files[0]);if(sel)await openFile(sel);else{cur='';ed.setValue('');title();}}
+let fileSet=null,serverSettings=false;
+async function openFile(n){const r=await api('/api/file?name='+encodeURIComponent(n));if(r.error)return;cur=r.name;$('files').value=cur;
+ const lg=r.lang||(isAsm()?'asm':'c');ed.setValue(r.code,lg);ed.setLang(lg);dirty=false;title();fillSnips();
+ $('langl').textContent=T(lg=='asm'?'d.langAsm':'d.langC');
+ LS.set('file',cur);setFosc(r.fosc);
+ serverSettings='settings' in r;let local={};try{local=JSON.parse(LS.get('dbg.'+cur)||'{}');}catch(e){}
+ fileSet=Object.assign({fosc:fosc},local,r.settings||{});showCfg();
+ ed.setMarkers([]);execAt(mode=='pause'?pcLine():null);
+ loadBps();if(dbg)dbg.setWatches(fileSet.watches||[]);dstText();
+ const c=r.settings&&r.settings.circuit;
+ if(c&&c!==cname&&!cdirty&&circList.includes(c)){if(await openCircuit(c,true))log([['','Bu dosyanın devresi açıldı: '+c]],true);}}
+function persist(extra){if(!cur)return;fileSet=Object.assign({},fileSet||{},{fosc},extra||{});
+ LS.set('dbg.'+cur,JSON.stringify({breakpoints:fileSet.breakpoints||[],watches:fileSet.watches||[]}));
+ const body=Object.assign({name:cur},fileSet);
+ api('/api/settings',body).then(r=>{if(r&&r.settings)serverSettings=true;}).catch(()=>{});}
+async function save(){if(!cur)return;await api('/api/save',{name:cur,code:ed.getValue(),fosc});dirty=false;title();}
+const MSG_RE=/(?:^|[\s\/\\])([\w\-]+\.(?:c|asm))[:(](\d+)(?:[:,]\d+)?[:)]?/i;
+let outputsOK=null;
+async function postOutputs(code,mc,legacy){
+ if(outputsOK===false||!cur||!window.IDE||!P.loaded)return;
+ const base={PIC:PICM,prog:P.prog,debug:dbgInfo,src:code,file:cur,date:new Date()};
+ const files={lst:IDE.outputs.lstText(base),asm:IDE.outputs.asmText(base),log:mc?IDE.outputs.logText(mc,'en'):legacy.join('\n')+'\n'};
+ for(const kind of ['lst','asm','log']){const r=await apiOpt('/api/output',{name:cur,kind,text:files[kind]});
+  if(r==null){outputsOK=false;return;}if(r.error){log([['w',T('d.outErr',[kind,r.error])]],true);return;}}
+ outputsOK=true;}
+async function build(opt){
+ opt=opt&&typeof opt=='object'&&'run' in opt?opt:{run:true};
+ if(!cur)return false;$('build').disabled=true;let ok=false;log([['',T(isAsm()?'build.asmStart':'build.start',[cur,fosc/1e6])]]);
+ try{const code=ed.getValue(),r=await api('/api/build',{name:cur,code,fosc});dirty=false;title();
+  const diag=Array.isArray(r.diag)?r.diag.filter(d=>d&&d.line>0):[],marks=diag.map(d=>({line:+d.line,sev:d.sev=='warning'?'warning':'error',text:d.text}));
+  const mc=Array.isArray(r.mc)&&r.mc.length?r.mc.map(m=>Object.assign({when:new Date()},m)):null;
+  const lines=(r.messages||[]).map(t=>{const m=MSG_RE.exec(t),ln=m&&m[1].toLowerCase()==cur.toLowerCase()?+m[2]:null,c=/error|syntax|hata/i.test(t)?'e':'w';
+   if(ln&&!diag.length)marks.push({line:ln,sev:c=='e'?'error':'warning',text:t});return [c,t,ln];});
+  if(diag.length)for(const d of diag)if(!lines.some(l=>l[2]==d.line))lines.push([d.sev=='warning'?'w':'e',cur+':'+d.line+': '+d.text,+d.line]);
+  if(r.error)lines.push(['e',r.error]);
+  ed.setMarkers(marks);
+  const extra=mc?[]:lines;
+  if(r.ok){const h=useHex(r.hex,cur.replace(/\.\w+$/,'')+'.hex');
+   dbgInfo=r.debug||null;dbgFile=cur;dbgStale=false;
+   const rom=h.n;lastRom=rom;
+   if(!mc)extra.push(['',T('build.romLine',[rom,Math.round(rom/20.48)])+(dbgInfo&&dbgInfo.ram?' · RAM: '+dbgInfo.ram+' / 224 '+T('d.byte'):'')]);
+   romTxt=()=>T('status.rom',[rom])+(dbgInfo&&dbgInfo.ram?' · '+T('status.ram',[dbgInfo.ram]):'');$('romi').textContent=romTxt();
+   if(h.cfg!=null)extra.push(['','Config word: 0x'+h.cfg.toString(16).toUpperCase().padStart(4,'0')+' ('+({settings:T('d.cfgSrcSettings'),default:T('d.cfgSrcDefault'),source:T('d.cfgSrcSource')}[r.configSource]||'HEX')+')']);
+   if(HAS_DBG&&!(dbgInfo&&dbgInfo.lines&&dbgInfo.lines.length))extra.push(['w',T('build.noLineInfo')]);
+   if(!mc)extra.push(['ok',T('build.ok',[r.hexPath])]);
+   log(extra);if(mc)renderMc(mc);showBps();syncBp();if(dbg)dbg.symbolsChanged();
+   postOutputs(code,mc,(r.messages||[]).concat(['hex: '+(r.hexPath||'')]));
+   ok=true;if(opt.run)setMode('run');}
+  else{if(!mc)extra.push(['e',T('build.errors')]);log(extra);if(mc)renderMc(mc);}
+ }catch(e){log([['e',T('build.serverDown',[e.message])]]);}
+ $('build').disabled=false;return ok;
+}
+
+/* ================= hata ayiklayici ================= */
+let dbg=null,dbgInfo=null,dbgFile='',dbgStale=false,bpLines=new Map(),bpAddrs=new Set(),tempBp=[];
+const mapDbg=()=>window.IDE&&dbgInfo&&dbgInfo.lines&&dbgInfo.lines.length&&dbgFile==cur?dbgInfo:null;
+const pcLine=()=>{const d=mapDbg();return d?IDE.map.addrLine(d,P.pc&2047):null;};
+function execAt(line){ed.setExecLine(line||null);}
+function loadBps(){bpLines=new Map();for(const l of (fileSet&&fileSet.breakpoints)||[])if(+l>0)bpLines.set(+l,true);showBps();syncBp();}
+function showBps(){const d=mapDbg();ed.setBreakpoints([...bpLines.keys()].map(l=>({line:l,ok:!d||dbgStale||IDE.map.hasCode(d,l)})));}
+function syncBp(){if(!core.bp)return;core.bp.clearAll();const d=mapDbg();
+ if(d)for(const l of bpLines.keys())for(const a of IDE.map.lineAddrs(d,l))core.bp.set(a);
+ for(const a of bpAddrs)core.bp.set(a);for(const a of tempBp)core.bp.set(a);}
+function toggleBp(line){
+ if(!HAS_DBG)return;
+ const d=mapDbg();
+ if(d&&!dbgStale&&!bpLines.has(line)&&!IDE.map.hasCode(d,line)){const n=IDE.map.nearestCodeLine(d,line,20);if(n==null){toast(T('d.noCode'));return;}line=n;}
+ if(bpLines.has(line))bpLines.delete(line);else bpLines.set(line,true);
+ showBps();syncBp();persist({breakpoints:[...bpLines.keys()].sort((a,b)=>a-b)});if(dbg)dbg.refresh(true);}
+function pauseAt(reason){setMode('pause');carry=0;afterStop(reason);}
+let stopReason='';
+function afterStop(reason){
+ stopReason=reason||'';tempBp=[];syncBp();
+ const ln=pcLine();execAt(ln);
+ if(dbg)dbg.markStop();
+ dstText(reason);renderPopups();}
+function dstText(reason){
+ const e=$('dst');if(!e)return;reason=reason||stopReason;
+ if(mode=='stop'){e.textContent=dbgStale?T('d.codeChanged'):(bpLines.size?bpLines.size+' breakpoint':'');return;}
+ const ln=pcLine(),sw=dbg?dbg.stopwatch():null,us=c=>c*4e6/(sw&&sw.clockMHz?sw.clockMHz*1e6:sfosc);
+ let t=(mode=='run'?T('d.running'):T('d.stopped')+(reason=='bp'?' (breakpoint)':''))+' · PC '+hx3(P.pc&0x1FFF)+(ln?' · '+T('col.line').toLowerCase()+' '+ln:'');
+ if(sw&&mode!='run'&&sw.stops.length>1){const d=sw.stops[sw.stops.length-1]-sw.stops[sw.stops.length-2];t+=' · Δ '+d+' '+T('sw.cycles').toLowerCase()+' = '+(us(d)/1000).toFixed(3)+' ms';}
+ if(dbgStale)t+=' · ⚠ '+T('d.codeChangedShort');
+ e.textContent=t;}
+function dbgButtons(){
+ if(!HAS_DBG)return;
+ const ld=P.loaded;
+ $('dgo').disabled=mode=='run'||!ld;$('dpause').disabled=mode!='run';
+ for(const id of ['dinto','dover','dins','dcur'])$(id).disabled=!ld;
+ $('dout').disabled=mode=='stop';
+ $('dgo').textContent=T(mode=='pause'?'btn.continue':'d.btnRun');
+ $('dstop').disabled=mode=='stop';}
+function ensurePaused(){
+ if(mode=='stop'){setMode('run');if(mode!='run')return false;setMode('pause');afterStop('start');return 'started';}
+ if(mode=='run'){setMode('pause');}
+ return true;}
+function dstep(kind){
+ if(!HAS_DBG||!P.loaded)return;
+ const st=ensurePaused();if(!st)return;
+ if(st=='started'&&kind!='instr'&&!mapDbg())return;
+ tempBp=[];syncBp();
+ const d=mapDbg(),stops=d&&!dbgStale?IDE.map.stopSet(d):null;
+ let r;
+ try{
+  if(kind=='instr')r=core.stepIn();
+  else if(kind=='into')r=stops?core.stepLine(stops,false):core.stepIn();
+  else if(kind=='over')r=stops?core.stepLine(stops,true):core.stepOver();
+  else if(kind=='out'){r=core.stepOut();if(r.stop=='none'){toast(T('d.noSub'));return;}}
+ }catch(e){log([['e','Simülasyon hatası: '+e.message]],true);}
+ if(r&&r.stop=='limit')log([['w',T('d.stepLimit')]],true);
+ afterStop(r&&r.stop);}
+function runToCursor(){
+ if(!HAS_DBG||!P.loaded)return;
+ const d=mapDbg();if(!d){toast(T('d.needLines'));return;}
+ let line=ed.cursor().line,as=IDE.map.lineAddrs(d,line);
+ if(!as.length){const n=IDE.map.nearestCodeLine(d,line,20);if(n!=null){line=n;as=IDE.map.lineAddrs(d,n);}}
+ if(!as.length){toast(T('d.noCode'));return;}
+ if(mode=='stop'){setMode('run');if(mode!='run')return;}
+ tempBp=as;syncBp();if(mode=='pause')setMode('run');}
+function goRun(){if(mode!='run')setMode('run');}
+function showTab(id){
+ if(!dbg&&id!='msg'&&id!='lib'&&id!='setp')id='msg';
+ for(const b of $('tabs').children)b.classList.toggle('on',b.dataset.p==id);
+ $('msg').style.display=id=='msg'?'':'none';
+ $('libp').style.display=id=='lib'?'':'none';if(id=='lib'&&libp)libp.refresh();
+ $('setp').style.display=id=='setp'?'':'none';if(id=='setp')renderSettings();
+ if(dbg){if(id=='msg'||id=='lib'||id=='setp')dbg.setVisible(false);else{dbg.setVisible(true);dbg.show(id);}}}
+$('tabs').onclick=e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.p);};
+function initDebug(){
+ if(!HAS_DBG)return;
+ try{dbg=DEBUG.create({mount:$('dbgp'),core,PIC:PICM,getDebug:()=>dbgInfo,getFosc:()=>sfosc,canWrite:()=>mode!='run',toast,t:T,
+  onChange:()=>{dstText();},onWatches:w=>persist({watches:w}),
+  onAddrBp:a=>{if(bpAddrs.has(a))bpAddrs.delete(a);else bpAddrs.add(a);syncBp();},
+  onGotoLine:l=>ed.gotoLine(l,{flash:true})});}
+ catch(e){log([['e',T('d.dbgLoadFail',[e.message])]],true);return;}
+ for(const p of dbg.panes){const b=document.createElement('button');b.dataset.p=p.id;b.textContent=p.title;$('tabs').appendChild(b);}
+ dbg.setVisible(false);
+ $('dtb').hidden=false;
+ $('dstart').onclick=dbgStart;$('dstop').onclick=()=>setMode('stop');$('dgo').onclick=goRun;$('dpause').onclick=()=>{if(mode=='run')pauseAt('pause');};
+ $('dinto').onclick=()=>dstep('into');$('dover').onclick=()=>dstep('over');$('dout').onclick=()=>dstep('out');$('dins').onclick=()=>dstep('instr');
+ $('dcur').onclick=runToCursor;$('dbp').onclick=()=>toggleBp(ed.cursor().line);
+ $('dbpx').onclick=clearBps;
+ dbgButtons();}
+function clearBps(){bpLines.clear();bpAddrs.clear();showBps();syncBp();persist({breakpoints:[]});if(dbg)dbg.refresh(true);}
+async function dbgStart(){
+ if(!HAS_DBG||!cur)return;
+ if(!P.loaded||dirty||dbgStale||dbgFile!=cur){if(!await build({run:false}))return;}
+ if(mode!='stop')setMode('stop');
+ const st=ensurePaused();if(!st)return;
+ const d=mapDbg();
+ if(d&&!isAsm()){const stops=IDE.map.stopSet(d);if(stops&&!stops[P.pc&2047]){try{core.stepLine(stops,false);}catch(e){}}}
+ afterStop('start');}
+function jumpToInterrupt(){
+ if(!HAS_DBG||!P.loaded)return;
+ if(mode=='stop'){setMode('run');if(mode!='run')return;}
+ tempBp=[4];syncBp();if(mode=='pause')setMode('run');}
+function addWatchHere(){
+ if(!dbg){return;}const w=ed.word?ed.word():'';if(!w){toast(T('d.noWord'));return;}
+ dbg.addWatch(w);showTab('watch');}
+function viewBps(){
+ const items=[...bpLines.keys()].sort((a,b)=>a-b).map(l=>({label:T('col.line')+' '+l,f:()=>ed.gotoLine(l,{flash:true})}));
+ for(const a of bpAddrs)items.push({label:hx3(a)+' ('+T('tab.disasm')+')',f:()=>{showTab('dis');}});
+ listDialog(T('item.viewBps'),items,T('d.noBps'));}
+function routineList(){
+ const items=(ed.routines?ed.routines():[]).map(r=>({label:r.name,note:T('col.line')+' '+r.line,f:()=>ed.gotoLine(r.line,{flash:true})}));
+ listDialog(T('item.routineList'),items,T('d.noRoutines'),true);}
+function listDialog(title,items,empty,filter){
+ const bg=$('lsbg'),q=$('lsq'),box=$('lslist');$('lstitle').textContent=title;q.hidden=!filter;q.value='';
+ const draw=()=>{box.textContent='';const f=q.value.toLowerCase(),sel=items.filter(i=>!f||i.label.toLowerCase().includes(f));
+  if(!sel.length){box.textContent=empty||'—';return;}
+  sel.forEach((it,k)=>{const d=document.createElement('div');d.className='lsi'+(k==0?' s':'');d.style.cssText='cursor:pointer;padding:0 4px;white-space:nowrap';d.textContent=it.label+(it.note?'   '+it.note:'');
+   d.onmouseenter=()=>{for(const x of box.children)x.style.background='';d.style.background='#dcebff';};d.onclick=()=>{bg.hidden=true;it.f();};box.appendChild(d);});};
+ q.oninput=draw;q.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter'){const f=box.querySelector('.lsi');if(f)f.click();}if(e.key=='Escape')bg.hidden=true;};
+ draw();bg.hidden=false;(filter?q:$('lsx')).focus();}
+$('lsx').onclick=()=>{$('lsbg').hidden=true;};
+(function splitter(){const s=$('split'),b=$('btm');const h=+LS.get('btmH');if(h>=70)b.style.height=h+'px';
+ s.addEventListener('mousedown',e=>{e.preventDefault();const y0=e.clientY,h0=b.offsetHeight,max=$('mc').offsetHeight-160;
+  const mv=ev=>{b.style.height=Math.max(70,Math.min(max,h0+y0-ev.clientY))+'px';};
+  const up=()=>{removeEventListener('mousemove',mv);removeEventListener('mouseup',up);LS.set('btmH',b.offsetHeight);ed.refresh&&ed.refresh();};
+  addEventListener('mousemove',mv);addEventListener('mouseup',up);});})();
+
+/* ================= calisma klasoru, sablonlar, hakkinda ================= */
+async function initWs(){const r=await apiOpt('/api/workspace');if(!r||!Array.isArray(r.folders))return;wsFill(r);$('ws').hidden=false;}
+function wsFill(r){const s=$('ws');s.innerHTML='';for(const f of r.folders){const o=document.createElement('option');o.value=f;o.textContent='📁 '+f;s.appendChild(o);}
+ const o=document.createElement('option');o.value='__new';o.textContent='+ Yeni klasör…';s.appendChild(o);s.value=r.current;s.dataset.cur=r.current;s.title='Çalışma klasörü: '+(r.root||'')+'/'+r.current;}
+$('ws').onchange=async e=>{const s=e.target;let name=s.value,action='open';
+ if(name=='__new'){name=(prompt('Yeni çalışma klasörünün adı (harf, rakam, _ ve -):','')||'').trim();action='create';
+  if(!name){s.value=s.dataset.cur;return;}if(!/^[A-Za-z0-9_\-]{1,40}$/.test(name)){toast('Klasör adı sadece harf, rakam, _ ve - içerebilir.');s.value=s.dataset.cur;return;}}
+ if(dirty)await save();
+ const r=await apiOpt('/api/workspace',{action,name});
+ if(!r||r.error){toast((r&&r.error)||'Klasör açılamadı.');s.value=s.dataset.cur;return;}
+ wsFill(r);if(mode!='stop')setMode('stop');dbgInfo=null;dbgFile='';
+ log([['ok','Çalışma klasörü: '+r.current]]);await listFiles();await refreshCircs();};
+let tpls=null;
+async function loadTpls(){if(tpls)return tpls;const r=await apiOpt('/api/templates');tpls=Array.isArray(r)?r:(r&&Array.isArray(r.templates)?r.templates:[]);return tpls;}
+function fillTpl(){const lg=$('nlang').value,s=$('ntpl'),list=(tpls||[]).filter(t=>(t.lang||'c')==lg);
+ s.innerHTML='<option value="">Standart başlangıç kodu</option>';for(const t of list){const o=document.createElement('option');o.value=t.id;o.textContent=t.title||t.id;s.appendChild(o);}
+ $('ntplr').hidden=!(tpls&&tpls.length);$('ndesc').textContent='';}
+$('ntpl').onchange=()=>{const t=(tpls||[]).find(x=>x.id==$('ntpl').value);$('ndesc').textContent=t?(t.desc||'')+(t.circuit?' (Devre: '+t.circuit+')':''):'';
+ if(t&&FOSCS.includes(+t.fosc))$('nfosc').value=String(t.fosc);if(t&&!$('nname').value)$('nname').value=(t.title||t.id).replace(/[çğıöşüÇĞİÖŞÜ]/g,c=>'cgiosuCGIOSU'['çğıöşüÇĞİÖŞÜ'.indexOf(c)]).replace(/[^A-Za-z0-9_\-]+/g,'_').replace(/^_+|_+$/g,'').slice(0,40);};
+$('nlang').onchange=fillTpl;
+$('about').onclick=async()=>{const r=await apiOpt('/api/info'),e=$('ainfo');
+ if(!r)e.textContent='Sunucu tanılama bilgisi vermiyor (eski sürüm).';
+ else{const t=r.toolchain||{},mode={native:'yerel',rosetta:'Rosetta 2 (x86_64)',missing:'BULUNAMADI'}[t.mode]||t.mode||'?';
+  e.textContent='Sürüm:            '+(r.version||'dev')+'\nÇalışma klasörü:  '+(r.workspace||'?')+'\nVeri kökü:        '+(r.home||'?')+'\nMimari:           '+(r.arch||'?')+'\nPython:           '+(r.python||'?')+
+   '\nAraç zinciri:     '+mode+'\n  SDCC:           '+(t.sdcc||'?')+'\n  gputils:        '+(t.gputils||'?')+'\n\nmikroC uyumlu sözdizimi · Proteus .pdsprj içe aktarır\nSDCC ve gputils (GPL) kullanır.';}
+ $('adlg').style.display='block';};
+$('aclose').onclick=()=>$('adlg').style.display='none';
+
+/* ================= proje ayarlari (config bitleri) ================= */
+const CFG=window.IDE&&IDE.config;
+let ep=null;
+const storedCfg=()=>fileSet&&Number.isInteger(fileSet.config)?fileSet.config:null;
+function projCfgWord(){if(!CFG||!cur)return null;const c=storedCfg();return c!=null?c:isAsm()?null:CFG.defaultWord(fosc);}
+function openProject(){
+ if(!CFG)return;if(!cur){toast(T('d.openFirst'));return;}
+ const st=storedCfg(),src=st==null&&isAsm()&&hexCfg&&dbgFile==cur?hexCfg.word:null;
+ ep={fosc,useDef:st==null,src,libModel:!!fileSet&&fileSet.libModel==='mikroc',word:st!=null?st:isAsm()?(src!=null?src:0x3F10):CFG.defaultWord(fosc)};
+ $('eplibf').hidden=!(srvInfo&&Array.isArray(srvInfo.libModels)&&srvInfo.libModels.includes('mikroc'))||isAsm();$('eplib').checked=ep.libModel;
+ $('eptitle').textContent=T('dlg.editProject')+' — '+cur;$('epfosc').value=String(fosc);epBuild();epShow();$('epbg').hidden=false;$('epok').focus();}
+function epBuild(){const box=$('epcfg');if(box.dataset.built)return;box.dataset.built='1';
+ const row=(id,label,opts)=>{const l=document.createElement('label'),sp=document.createElement('span'),s=document.createElement('select');sp.textContent=label;s.id=id;s.className='w';
+  for(const [v,t] of opts){const o=document.createElement('option');o.value=String(v);o.textContent=t;s.appendChild(o);}
+  s.onchange=()=>{ep.useDef=false;ep.word=CFG.encode(epRead());epShow();};l.appendChild(sp);l.appendChild(s);box.appendChild(l);};
+ row('ep_osc','Osilatör (FOSC)',CFG.OSC);for(const [k,label,on,off] of CFG.FIELDS)row('ep_'+k,label,[[1,on],[0,off]]);}
+function epRead(){const c={osc:+$('ep_osc').value};for(const [k] of CFG.FIELDS)c[k]=$('ep_'+k).value=='1';return c;}
+function epShow(){const c=CFG.decode(ep.word);$('ep_osc').value=String(c.osc);for(const [k] of CFG.FIELDS)$('ep_'+k).value=c[k]?'1':'0';
+ $('epword').textContent=CFG.hex(ep.word);$('epbits').textContent=ep.word.toString(2).padStart(14,'0').replace(/^(\d\d)(\d{4})(\d{4})(\d{4})$/,'$1 $2 $3 $4');
+ $('epsrc').textContent=ep.useDef?(isAsm()?'kaynaktaki __CONFIG kullanılır':'varsayılan (Fosc\'a göre)'):'proje ayarı';
+ const w=CFG.warnings(c,ep.fosc);if(isAsm()&&!ep.useDef)w.unshift('Assembly: kaynaktaki __CONFIG yerine bu değer HEX\'e yazılır.');
+ $('epwarn').innerHTML='';for(const t of w){const d=document.createElement('div');d.textContent='⚠ '+t;$('epwarn').appendChild(d);}}
+function epClose(){$('epbg').hidden=true;ep=null;ed.focus();}
+let srvInfo=null;apiOpt('/api/info').then(r=>{srvInfo=r;});
+$('epfosc').onchange=e=>{ep.fosc=+e.target.value;if(ep.useDef&&!isAsm())ep.word=CFG.defaultWord(ep.fosc);epShow();};
+$('eplib').onchange=e=>{if(ep)ep.libModel=e.target.checked;};
+$('epdef').onclick=()=>{ep.useDef=true;ep.word=isAsm()?(ep.src!=null?ep.src:0x3F10):CFG.defaultWord(ep.fosc);epShow();};
+$('epok').onclick=()=>{const e=ep;if(!e)return;epClose();
+ if(e.fosc!==fosc)setFosc(e.fosc,true);
+ let c=e.useDef?null:e.word;if(c!=null&&!isAsm()&&c===CFG.defaultWord(fosc))c=null;
+ const lm=!$('eplibf').hidden?{libModel:e.libModel?'mikroc':'eelab'}:{};
+ persist(Object.assign({config:c},lm));showCfg();if(window.renderSettings)renderSettings();
+ log([['ok',T('d.projSaved',[cur,fosc/1e6,c==null?(isAsm()?T('d.cfgSrcSource'):CFG.hex(CFG.defaultWord(fosc))+' ('+T('d.cfgSrcDefault')+')'):CFG.hex(c)])+(lm.libModel?' · '+T('d.libModelLabel')+': '+(lm.libModel=='mikroc'?T('cfg.on'):T('cfg.off')):'')]],true);};
+$('epcancel').onclick=$('epx').onclick=epClose;
+$('cfgedit').onclick=$('cfgw').onclick=openProject;
+
+/* ================= dosya yonetimi ================= */
+const NAME_OK=n=>/^[A-Za-z0-9_\-]{1,40}$/.test(n);
+function askName(msg,def){const n=(prompt(msg,def)||'').trim().replace(/\.(c|asm|json)$/i,'');if(!n)return null;if(!NAME_OK(n)){toast('Ad sadece harf, rakam, _ ve - içerebilir (en çok 40).');return null;}return n;}
+async function fillFiles(){const r=await api('/api/files');const s=$('files');s.innerHTML='';
+ for(const f of r.files||[]){const o=document.createElement('option');o.value=f;o.textContent=f;s.appendChild(o);}if(cur)s.value=cur;return r;}
+function moveLocal(a,b){const v=LS.get('dbg.'+a);if(v!=null){if(b)LS.set('dbg.'+b,v);LS.del('dbg.'+a);}}
+async function srcOp(op,name){
+ name=name||cur;if(!name){toast('Önce bir kod dosyası aç.');return;}
+ const base=name.replace(/\.\w+$/,''),ext=name.slice(base.length);
+ if(name==cur&&dirty&&op!='delete')await save();
+ if(op=='open'){if(name!=cur){if(dirty)await save();await openFile(name);}return;}
+ if(op=='reveal'){const r=await apiOpt('/api/reveal',{name});if(!r||r.error)toast((r&&r.error)||'Gösterilemedi.');else log([['','Finder\'da gösterildi: '+r.path]],true);return;}
+ if(op=='delete'){
+  if(!confirm('"'+name+'" silinsin mi?\n\nDosya ve HEX\'i EELAB veri klasöründeki .Silinenler klasörüne taşınır; oradan geri alabilirsin.'))return;
+  const r=await api('/api/delete',{name});if(r.error){toast(r.error);return;}
+  await apiOpt('/api/delete',{name:base+'.hex'});moveLocal(name,null);
+  log([['ok','Silindi (.Silinenler klasörüne taşındı): '+name]],true);
+  if(name==cur){cur='';dirty=false;if(dbgFile==name){dbgInfo=null;dbgFile='';}await listFiles();}else await fillFiles();
+  pmRefresh();return;}
+ const to=askName(op=='rename'?'"'+name+'" — yeni ad ('+ext+'):':'"'+name+'" kopyasının adı ('+ext+'):',op=='rename'?base:base+'_kopya');if(!to||to==base)return;
+ const r=await api(op=='rename'?'/api/rename':'/api/duplicate',{name,to:to+ext});if(r.error){toast(r.error);return;}
+ if(op=='rename'){
+  await apiOpt('/api/rename',{name:base+'.hex',to:to+'.hex'});moveLocal(name,r.name);
+  if(dbgFile==name)dbgFile=r.name;if($('pf').textContent==base+'.hex')$('pf').textContent=to+'.hex';
+  if(name==cur){cur=r.name;LS.set('file',cur);title();}
+  await fillFiles();log([['ok','Yeniden adlandırıldı: '+name+' → '+r.name]],true);}
+ else{log([['ok','Kopyalandı: '+name+' → '+r.name+' (Fosc ve config ayarlarıyla)']],true);await listFiles(r.name);}
+ pmRefresh();}
+async function relinkCircuit(from,to){const r=await apiOpt('/api/files');
+ for(const [f,c] of Object.entries((r&&r.circuit)||{}))if(c===from)await apiOpt('/api/settings',{name:f,circuit:to});
+ if(fileSet&&fileSet.circuit===from)fileSet.circuit=to;}
+async function circOp(op,name){
+ name=name||cname;const ws=await apiOpt('/api/circuits'),inWs=!!(ws&&ws.workspace&&ws.workspace.includes(name));
+ if(op=='open'){if(mode!='stop'){toast('Önce simülasyonu durdur (■).');return;}if(askLose()&&await openCircuit(name))linkCircuit();pmRefresh();return;}
+ if(!inWs&&op!='duplicate'){toast('"'+name+'" bu çalışma klasöründe değil (örnek devre). Önce Save Design ile kaydet.');return;}
+ if(op=='reveal'){const r=await apiOpt('/api/reveal',{name:name+'.json'});if(!r||r.error)toast((r&&r.error)||'Gösterilemedi.');return;}
+ if(op=='delete'){
+  if(!confirm('Devre "'+name+'.json" silinsin mi?\n\n.Silinenler klasörüne taşınır; bu devreye bağlı kod dosyalarının bağlantısı kaldırılır.'))return;
+  const r=await api('/api/circuit-delete',{name});if(r.error){toast(r.error);return;}
+  await relinkCircuit(name,'');
+  if(name==cname){if(mode!='stop')setMode('stop');cdirty=false;LS.del('circuit');await loadDefault();}
+  await refreshCircs();log([['ok','Devre silindi (.Silinenler klasörüne taşındı): '+name+'.json']],true);pmRefresh();return;}
+ const to=askName(op=='rename'?'Devre "'+name+'" — yeni ad:':'Devre "'+name+'" kopyasının adı:',op=='rename'?name:name+'_kopya');if(!to||to==name)return;
+ let r;
+ if(op=='rename')r=await api('/api/rename',{name:name+'.json',to:to+'.json'});
+ else if(inWs)r=await api('/api/duplicate',{name:name+'.json',to:to+'.json'});
+ else{const c=await api('/api/circuit?name='+encodeURIComponent(name));r=c.error?c:await api('/api/circuit-save',{name:to,circuit:c});}
+ if(r.error){toast(r.error);return;}
+ if(op=='rename'){await relinkCircuit(name,to);if(cname==name){cname=to;ctitle();LS.set('circuit',to);}log([['ok','Devre yeniden adlandırıldı: '+name+' → '+to+' (bağlı kod dosyaları güncellendi)']],true);}
+ else log([['ok','Devre kopyalandı: '+name+' → '+to+'.json (Open Design listesinde)']],true);
+ await refreshCircs();pmRefresh();}
+async function pmRefresh(){if($('pmbg').hidden)return;
+ const [f,c,w]=await Promise.all([apiOpt('/api/files'),apiOpt('/api/circuits'),apiOpt('/api/workspace')]);
+ $('pmws').textContent=(w&&w.current)||(f&&f.workspace)||'';
+ const fill=(tb,list,isSrc)=>{tb.innerHTML='';if(!list.length){const tr=tb.insertRow(),td=tr.insertCell();td.textContent='(yok)';td.style.color='#888';}
+  for(const n of list){const tr=tb.insertRow(),td=tr.insertCell(),acts=tr.insertCell();td.textContent=n+(isSrc?'':'.json');
+   if(isSrc?n==cur:n==cname)tr.className='cur';
+   if(isSrc&&f.circuit&&f.circuit[n])td.title='Devre: '+f.circuit[n];
+   for(const [op,t] of [['open','Aç'],['rename','Yeniden adlandır'],['duplicate','Çoğalt'],['delete','Sil'],['reveal','Finder']]){const a=document.createElement('a');a.textContent=t;if(op=='delete')a.className='del';
+    a.onclick=()=>isSrc?srcOp(op,n):circOp(op,n);acts.appendChild(a);}}};
+ fill($('pmsrc'),(f&&f.files)||[],true);fill($('pmcirc'),(c&&c.workspace)||[],false);}
+function pmOpen(){$('pmbg').hidden=false;pmRefresh();}
+$('pmx').onclick=$('pmclose').onclick=()=>{$('pmbg').hidden=true;};
+$('pmreveal').onclick=()=>api('/api/reveal',{});
+for(const id of ['epbg','pmbg'])$(id).addEventListener('mousedown',e=>{if(e.target.id==id)$(id).hidden=true;});
+
+/* ================= mikroC menusu ================= */
+let mmOpen=null;
+const K=id=>KEYS.label(id);
+function mmClose(){if(mmOpen){mmOpen.box.remove();mmOpen.btn.classList.remove('on');mmOpen=null;}}
+function bmItems(kind){return Array.from({length:10},(_,i)=>(i+1)%10).map(d=>({t:String(d),f:()=>kind=='set'?(ed.setBookmark&&toast(T(ed.setBookmark(d)?'d.bmSet':'d.bmClear',[d]))):(ed.gotoBookmark&&!ed.gotoBookmark(d)&&toast(T('d.bmNone',[d])))}));}
+function mmItems(m){const sep={sep:1},dbgOff=!HAS_DBG,pOff=dbgOff||!P.loaded;
+ if(m=='file')return [{t:T('item.new'),f:()=>$('new').click()},{t:T('item.save'),k:K('save'),f:save,off:!cur},sep,
+  {t:T('item.rename'),f:()=>srcOp('rename'),off:!cur},{t:T('item.duplicate'),f:()=>srcOp('duplicate'),off:!cur},{t:T('item.delete'),f:()=>srcOp('delete'),off:!cur},{t:T('item.revealFinder'),f:()=>srcOp('reveal'),off:!cur},sep,
+  {t:T('menu.circuit'),sub:[{t:T('item.circuitHeader',[cname+'.json']),hd:1},{t:T('item.rename'),f:()=>circOp('rename')},{t:T('item.duplicate'),f:()=>circOp('duplicate')},{t:T('item.delete'),f:()=>circOp('delete')},{t:T('item.revealFinder'),f:()=>circOp('reveal')},sep,{t:T('item.projectManager'),f:pmOpen}]},sep,
+  {t:T('item.projectManager'),f:pmOpen},{t:T('item.openFolder'),f:()=>$('reveal').click()},{t:T('item.submission'),f:teslimOpen,off:!cur}];
+ if(m=='edit')return [{t:T('d.undo'),k:'Ctrl+Z',f:()=>ed.undo&&ed.undo()},{t:T('item.redo'),k:K('redo'),f:()=>ed.redo&&ed.redo()},sep,
+  {t:T('item.deleteLine'),k:K('deleteLine'),f:()=>ed.deleteLine&&ed.deleteLine()},{t:T('item.comment'),k:K('comment'),f:()=>ed.comment&&ed.comment()},{t:T('item.uncomment'),k:K('uncomment'),f:()=>ed.uncomment&&ed.uncomment()},
+  {t:T('item.indent'),k:K('indent'),f:()=>ed.indent&&ed.indent()},{t:T('item.unindent'),k:K('unindent'),f:()=>ed.unindent&&ed.unindent()},sep,
+  {t:T('item.find'),k:K('find'),f:()=>ed.openFind(false)},{t:T('item.findNext'),k:K('findNext'),f:()=>ed.findNext&&ed.findNext(1)},{t:T('item.findPrev'),k:K('findPrev'),f:()=>ed.findNext&&ed.findNext(-1)},{t:T('item.replace'),k:K('replace'),f:()=>ed.openReplace&&ed.openReplace()},{t:T('item.gotoLine'),k:K('gotoLine'),f:()=>ed.openGoto&&ed.openGoto()},sep,
+  {t:T('item.bookmarkSet'),sub:bmItems('set')},{t:T('item.bookmarkGo'),sub:bmItems('go')},{t:T('item.routineList'),k:K('routineList'),f:routineList},{t:T('d.findDecl'),k:K('findDecl'),f:()=>{if(!ed.findDecl||!ed.findDecl())toast(T('d.declNone'));}},sep,
+  {t:T('item.codeAssist'),k:K('codeAssist'),f:()=>{ed.focus();if(ed.complete)ed.complete();},off:!ed.complete},{t:T('item.paramAssist'),k:K('paramAssist'),f:()=>{ed.focus();if(ed.paramAssist&&!ed.paramAssist())toast(T('d.noParam'));}},{t:T('item.template'),k:K('template'),f:()=>$('snip').focus()}];
+ if(m=='view')return [{t:T('tab.messages'),f:()=>showTab('msg')},{t:T('item.library'),f:()=>showTab('lib')},{t:T('tab.settings'),f:()=>showTab('setp')},sep,
+  {t:T('tab.registers'),f:()=>showTab('regs'),off:!dbg},{t:T('tab.ram'),f:()=>showTab('ram'),off:!dbg},{t:T('item.watch'),k:K('watch'),f:()=>showTab('watch'),off:!dbg},{t:T('tab.stack'),f:()=>showTab('stack'),off:!dbg},{t:T('item.disasm'),k:K('disasm'),f:()=>showTab('dis'),off:!dbg},{t:T('item.statistics'),f:()=>showTab('stats'),off:!dbg},sep,
+  {t:T('item.viewBps'),k:K('viewBps'),f:viewBps,off:dbgOff}];
+ if(m=='run')return [{t:T('item.startDebug'),k:K('startDebug'),f:dbgStart,off:dbgOff||!cur},{t:T('item.stopDebug'),k:K('stopDebug'),f:()=>setMode('stop'),off:mode=='stop'},{t:T('item.runPause'),k:K('runPause'),f:()=>ACT.runPause(),off:pOff},sep,
+  {t:T('item.stepInto'),k:K('stepInto'),f:()=>dstep('into'),off:pOff},{t:T('item.stepOver'),k:K('stepOver'),f:()=>dstep('over'),off:pOff},{t:T('item.stepOut'),k:K('stepOut'),f:()=>dstep('out'),off:dbgOff||mode=='stop'},{t:T('item.runToCursor'),k:K('runToCursor'),f:runToCursor,off:pOff},{t:T('item.jumpToInterrupt'),k:K('jumpToInterrupt'),f:jumpToInterrupt,off:pOff},sep,
+  {t:T('item.toggleBp'),k:K('toggleBp'),f:()=>toggleBp(ed.cursor().line),off:dbgOff},{t:T('item.viewBps'),k:K('viewBps'),f:viewBps,off:dbgOff},{t:T('item.clearBps'),k:K('clearBps'),f:clearBps,off:dbgOff},sep,
+  {t:T('item.addWatch'),k:K('addWatch'),f:addWatchHere,off:!dbg},{t:T('item.watch'),k:K('watch'),f:()=>showTab('watch'),off:!dbg},{t:T('item.disasm'),k:K('disasm'),f:()=>showTab('dis'),off:!dbg}];
+ if(m=='tools')return [{t:T('item.options'),k:K('options'),f:openOptions},sep,{t:T('item.statistics'),f:()=>showTab('stats'),off:!dbg},{t:T('item.library'),f:()=>showTab('lib')},{t:T('tab.settings'),f:()=>showTab('setp')}];
+ if(m=='help')return [{t:T('d.shortcuts'),f:shortcutsList},{t:T('item.about'),f:()=>$('about').click()}];
+ return [{t:T('item.editProject'),k:K('editProject'),f:openProject,off:!cur||!CFG},{t:T('item.build'),k:K('build'),f:build,off:!cur},{t:T('d.buildAll'),k:K('buildAll'),f:build,off:!cur},sep,
+  {t:T('item.projectManager'),f:pmOpen},{t:T('tab.settings'),f:()=>showTab('setp')},sep,{t:T('d.mcppiImport'),f:()=>$('mcppifile').click()},{t:T('d.mcppiExport'),f:mcppiExport,off:!cur},sep,
+  {t:T('item.codeAssist'),k:K('codeAssist'),f:()=>{ed.focus();if(ed.complete)ed.complete();},off:!ed.complete},{t:T('item.library'),f:()=>showTab('lib')},{t:T('item.statistics'),f:()=>showTab('stats'),off:!dbg}];}
+function mmFill(box,items){for(const it of items){const d=document.createElement('div');
+  if(it.sep){d.className='sep';box.appendChild(d);continue;}
+  d.className='it'+(it.off?' off':'')+(it.hd?' hd':'')+(it.sub?' sub':'');const sp=document.createElement('span');sp.textContent=it.t+(it.sub?' ▸':'');d.appendChild(sp);
+  if(it.k){const k=document.createElement('kbd');k.textContent=it.k;d.appendChild(k);}
+  if(it.sub){const sb=document.createElement('div');sb.className='ctxm subm';mmFill(sb,it.sub);d.appendChild(sb);}
+  else if(!it.off&&!it.hd)d.onclick=()=>{mmClose();it.f();};box.appendChild(d);}}
+$('mmenu').addEventListener('mousedown',e=>{const b=e.target.closest('.mi');if(!b)return;e.preventDefault();
+ const same=mmOpen&&mmOpen.btn==b;mmClose();if(same)return;
+ const box=document.createElement('div');box.className='ctxm';
+ mmFill(box,mmItems(b.dataset.m));
+ const r=b.getBoundingClientRect();box.style.left=r.left+'px';box.style.top=(r.bottom+scrollY)+'px';document.body.appendChild(box);
+ b.classList.add('on');mmOpen={btn:b,box};});
+$('mmenu').addEventListener('mouseover',e=>{const b=e.target.closest('.mi');if(mmOpen&&b&&b!=mmOpen.btn)b.dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));});
+addEventListener('mousedown',e=>{if(mmOpen&&!mmOpen.box.contains(e.target)&&!e.target.closest('#mmenu'))mmClose();},true);
+function shortcutsList(){
+ listDialog(T('d.shortcuts'),KEYS.table.ide.map(en=>({label:T('d.act.'+en.id)+' — '+en.key+(en.alias&&en.alias.length?' ('+en.alias.join(', ')+')':''),f:()=>{}})),'');}
+
+/* ================= .mcppi içe/dışa aktarma (sunucu desteklerse) ================= */
+async function mcppiLoad(files){
+ let mcppi=null;const srcs={};
+ for(const f of files){const t=await f.text();if(/\.mcppi$/i.test(f.name))mcppi=t;else srcs[f.name]=t;}
+ if(mcppi==null){toast(T('d.noMcppi'));return;}
+ const r=await apiOpt('/api/import-mcppi',{mcppi,files:srcs});
+ if(!r){toast(T('d.noServerFeature'));return;}
+ if(r.error){toast(r.error);return;}
+ if(dirty)await save();
+ await listFiles(r.name);
+ log([['ok',T('d.mcppiOk',[r.name,(r.fosc||0)/1e6])],...(r.warnings||[]).map(w=>['w',w])],true);}
+async function mcppiExport(){
+ if(!cur)return;if(dirty)await save();
+ let res;try{res=await fetch('/api/export-mcppi?name='+encodeURIComponent(cur));}catch(e){toast(e.message);return;}
+ if(!res.ok){toast(T('d.noServerFeature'));return;}
+ download(cur.replace(/\.\w+$/,'')+'_mcppi.zip',await res.blob());}
+$('mcppifile').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)mcppiLoad(fs);};
+
+/* ================= proje ayarları paneli (M4) + kütüphane yöneticisi ================= */
+let libData=null;
+function renderSettings(){
+ const e=$('setp');if(!e)return;e.textContent='';
+ const fs=(legend)=>{const f=document.createElement('fieldset'),l=document.createElement('legend');l.textContent=legend;f.appendChild(l);e.appendChild(f);return f;};
+ const row=(f,label,ctl)=>{const l=document.createElement('label'),s=document.createElement('span');s.textContent=label;l.appendChild(s);l.appendChild(ctl);f.appendChild(l);return ctl;};
+ const f1=fs(T('d.setMcu'));
+ const dev=row(f1,T('lbl.device'),document.createElement('input'));dev.type='text';dev.value='P16F628A';dev.readOnly=true;
+ const clk=row(f1,T('lbl.clockMhz'),document.createElement('input'));clk.type='text';clk.value=(fosc/1e6).toFixed(6);clk.title='0.032 – 20 MHz';
+ const bad=document.createElement('div');bad.className='bad';f1.appendChild(bad);
+ clk.onchange=()=>{const x=parseFloat(String(clk.value).replace(',','.'));bad.textContent='';
+  if(!(x>=0.032&&x<=20)){bad.textContent=T('d.clkRange');clk.value=(fosc/1e6).toFixed(6);return;}
+  const hz=Math.round(x*1e6);if(!FOSCS.includes(hz)){bad.textContent=T('d.clkSupported');clk.value=(fosc/1e6).toFixed(6);return;}
+  if(hz!==fosc)setFosc(hz,true);else clk.value=(fosc/1e6).toFixed(6);};
+ const bt=row(f1,T('d.buildType'),document.createElement('select'));
+ for(const [v,t,dis] of [['rel','Release',0],['icd','ICD Debug',1]]){const o=document.createElement('option');o.value=v;o.textContent=t;o.disabled=!!dis;if(dis)o.title=T('d.icdOff');bt.appendChild(o);}
+ bt.value='rel';bt.title=T('d.icdOff');
+ const f2=fs('Library Manager');
+ const code=cur?ed.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g,' '):'',words=new Set(code.match(/[A-Za-z_]\w*/g)||[]);
+ const groups=new Map();for(const fn of (libData&&libData.functions)||[]){if(!groups.has(fn.group))groups.set(fn.group,false);if(words.has(fn.name))groups.set(fn.group,true);}
+ const lst=document.createElement('div');lst.className='libl';
+ if(!groups.size){lst.textContent=T('lib.unavailable');}
+ for(const [g,used] of groups){const d=document.createElement('div'),c=document.createElement('input');c.type='checkbox';c.checked=used;c.disabled=true;d.appendChild(c);d.appendChild(document.createTextNode(' '+g));lst.appendChild(d);}
+ f2.appendChild(lst);
+ const bs=document.createElement('div');bs.className='lib-btns';for(const t of ['Refresh','Rebuild','Check All','Clear All','Restore']){const b=document.createElement('button');b.textContent=t;b.disabled=true;bs.appendChild(b);}f2.appendChild(bs);
+ const n=document.createElement('div');n.className='dbg-note';n.textContent=T('dlg.libraryNote');f2.appendChild(n);}
+
+/* ================= seçenekler (F12) ================= */
+function openOptions(){
+ $('optlang').value=IDE.ui.lang();$('optclk').checked=clockLink();$('optbg').hidden=false;$('optlang').focus();}
+function optClose(){$('optbg').hidden=true;ed.focus();}
+$('optx').onclick=$('optcancel').onclick=optClose;
+$('optok').onclick=()=>{const l=$('optlang').value,cl=$('optclk').checked;optClose();
+ if(cl!==clockLink()){LS.set('clockLink',cl?'1':'0');applyClock();}
+ if(l!==IDE.ui.lang()){IDE.ui.setLang(l);applyLang();}};
+
+/* ================= arayüz dili ================= */
+function applyLang(){
+ document.documentElement.lang=IDE.ui.lang();
+ for(const e of document.querySelectorAll('[data-i18n]')){const r=T(e.dataset.i18n);if(r!==e.dataset.i18n)e.textContent=r;}
+ if(dbg){dbg.relabel();for(const p of dbg.panes){const b=[...$('tabs').children].find(x=>x.dataset.p==p.id);if(b)b.textContent=p.title;}}
+ $('dstop').title=T('item.stopDebug')+' ('+K('stopDebug')+')';$('dstart').title=T('item.startDebug')+' ('+K('startDebug')+')';
+ title();fillSnips();showCfg();dstText();dbgButtons();renderMc();renderSettings();clockBanner();slRender();
+ const c=ed.cursor();$('pos').textContent=T('status.line',[c.line,c.col]);
+ if(romTxt)$('romi').textContent=romTxt();}
+addEventListener('eelab-lang',()=>applyLang());
+let romTxt=null;
+
+/* ================= kutuphane paneli ================= */
+let libp=null;
+if(window.IDE&&IDE.libPanel)try{libp=IDE.libPanel({mount:$('libp'),getCode:()=>ed.getValue(),onInsert:t=>{if(ed.insertSnippet)ed.insertSnippet(t);else document.execCommand('insertText',false,t.replace('$0',''));ed.focus();}});}catch(e){libp=null;}
+apiOpt('/api/libs').then(r=>{const ok=r&&Array.isArray(r.functions);libData=ok?r:null;if(ok&&ed.setLibs)ed.setLibs(r);if(libp)libp.setLibs(ok?r:null);});
+
+/* ================= olaylar ================= */
+$('files').onchange=async()=>{if(dirty)await save();openFile($('files').value);};
+$('save').onclick=save;$('build').onclick=()=>build();
+$('reveal').onclick=()=>api('/api/reveal',{});
+$('teslim').onclick=teslimOpen;$('tok').onclick=teslim;$('tcancel').onclick=()=>$('tdlg').style.display='none';
+$('tsch').onchange=()=>{if(cur)teslimOpen();};
+$('fosc').onchange=e=>setFosc(e.target.value,true);
+$('new').onclick=async()=>{$('nname').value='';$('nlang').value=isAsm()?'asm':'c';$('nfosc').value=String(fosc);$('newdlg').style.display='block';$('nname').focus();await loadTpls();fillTpl();};
+$('ncancel').onclick=()=>$('newdlg').style.display='none';
+$('nok').onclick=async()=>{const n=$('nname').value.trim().replace(/\.(c|asm)$/i,'');
+ if(!/^[A-Za-z0-9_\-]{1,40}$/.test(n)){toast('Dosya adı sadece harf, rakam, _ ve - içerebilir.');return;}
+ const tid=$('ntpl').value,t=(tpls||[]).find(x=>x.id==tid),body={name:n+'.'+$('nlang').value,fosc:+$('nfosc').value};if(tid)body.template=tid;
+ const r=await api('/api/new',body);if(r.error){toast(r.error);return;}
+ $('newdlg').style.display='none';if(dirty)await save();await listFiles(r.name);
+ if(t&&t.circuit){await refreshCircs();if(circList.includes(t.circuit)&&askLose()&&await openCircuit(t.circuit)){linkCircuit();log([['','Şablonun devresi açıldı: '+t.circuit]],true);}}};
+for(const id of ['nname','tad','tno'])$(id).addEventListener('keydown',e=>{if(e.key=='Enter')$(id=='nname'?'nok':'tok').click();if(e.key=='Escape')$(id=='nname'?'ncancel':'tcancel').click();});
+$('play').onclick=()=>{if(mode!='run')setMode('run');};$('pause').onclick=()=>{if(mode=='run'){if(HAS_DBG)pauseAt('pause');else setMode('pause');}};$('stop').onclick=()=>setMode('stop');
+$('spd').onchange=e=>LS.set('speed',e.target.value);{const v=LS.get('speed');if(v&&[...$('spd').options].some(o=>o.value==v))$('spd').value=v;}
+$('loadhex').onclick=()=>$('hexfile').click();
+$('hexfile').onchange=e=>{const f=e.target.files[0];if(f)f.text().then(t=>{if(useHex(t,f.name)){dbgInfo=null;dbgFile='';execAt(null);if(dbg)dbg.symbolsChanged();setMode('run');}});e.target.value='';};
+/* ================= Proteus hata ayıklama komutları, animasyon seçenekleri, açılır pencereler ================= */
+function debugCmd(name){
+ const pp=/^popup:(\w+)$/.exec(name);if(pp){openPopup(pp[1]);return;}
+ switch(name){
+  case 'start':if(mode=='stop'){if(HAS_DBG)ensurePaused();else{setMode('run');if(mode=='run')setMode('pause');}}else if(mode=='pause')goRun();break;
+  case 'pause':if(mode=='run'){if(HAS_DBG)pauseAt('pause');else setMode('pause');}break;
+  case 'stop':setMode('stop');break;
+  case 'stepOver':dstep('over');break;case 'stepInto':dstep('into');break;case 'stepOut':dstep('out');break;
+  case 'resetPersistent':if(core.resetPersistent){core.resetPersistent();toast('Persistent model data has been reset.');renderPopups();if(dbg)dbg.refresh(true);}else toast('Reset Persistent Model Data is not available in this build.');break;
+ }}
+function animDialog(){
+ const f=$('an_fps'),ts=$('an_ts'),ss=$('an_ss');
+ f.value=String(anim.fps);ts.value=fmtEngS(1/anim.fps);ss.value=fmtEngS(anim.step);$('an_pins').value=String(anim.pins);$('an_wv').value=String(anim.wv);$('an_wc').value=String(anim.wc);$('an_err').textContent='';
+ f.oninput=()=>{const n=+f.value;ts.value=n>0?fmtEngS(1/n):'';};
+ $('animbg').hidden=false;f.focus();f.select();}
+function fmtEngS(s){return s>=1?+s.toFixed(3)+'s':s>=1e-3?+(s*1e3).toFixed(3)+'ms':+(s*1e6).toFixed(3)+'us';}
+$('animx').onclick=$('anim_cancel').onclick=()=>{$('animbg').hidden=true;};
+$('anim_ok').onclick=()=>{
+ const fps=Math.round(+$('an_fps').value),st=window.LIB&&LIB.parseEng?LIB.parseEng($('an_ss').value):parseFloat($('an_ss').value);
+ if(!(fps>=1&&fps<=60)){$('an_err').textContent='Frames per Second must be an integer between 1 and 60.';return;}
+ if(!(st>=1e-6&&st<=10)){$('an_err').textContent='Single Step Time must be between 1us and 10s (e.g. 50m).';return;}
+ setAnim({fps,step:st,pins:+$('an_pins').value,wv:+$('an_wv').value,wc:+$('an_wc').value});$('animbg').hidden=true;};
+const POP={regs:'PIC CPU Registers',data:'PIC CPU Data Memory',prog:'PIC CPU Program Memory',eeprom:'PIC CPU EPROM Memory',source:'PIC CPU Source Code',watch:'Watch Window'};
+const popups={},popPrev={};let popZ=26,popN=0;
+const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function openPopup(kind){
+ if(!POP[kind])return;
+ if(mode=='stop'&&kind!='watch'){debugCmd('start');if(mode=='stop')return;}
+ let p=popups[kind];
+ if(!p){const el=document.createElement('div');el.className='ppop'+(kind=='watch'?'':' paused-only');
+  const t=document.createElement('div');t.className='ppop-t';const sp=document.createElement('span');const x=document.createElement('button');x.textContent='✕';x.onclick=()=>{el.hidden=true;};t.appendChild(sp);t.appendChild(x);
+  const b=document.createElement('div');b.className='ppop-b';el.appendChild(t);el.appendChild(b);$('popups').appendChild(el);
+  const n=popN++;el.style.left=Math.min(innerWidth-300,Math.round(innerWidth*0.45)+n*24)+'px';el.style.top=(80+n*26)+'px';
+  t.onpointerdown=e=>{if(e.target===x)return;e.preventDefault();popZ++;el.style.zIndex=popZ;const dx=e.clientX-el.offsetLeft,dy=e.clientY-el.offsetTop;
+   const mv=ev=>{el.style.left=Math.max(0,ev.clientX-dx)+'px';el.style.top=Math.max(0,ev.clientY-dy)+'px';},up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);};addEventListener('pointermove',mv);addEventListener('pointerup',up);};
+  el.addEventListener('pointerdown',()=>{popZ++;el.style.zIndex=popZ;},true);
+  p=popups[kind]={el,sp,b};}
+ p.el.hidden=false;popZ++;p.el.style.zIndex=popZ;renderPopup(kind);}
+function hexRows(rows,prev,key,head){
+ let h='<table><tr><th></th>'+Array.from({length:16},(_,i)=>'<th>'+i.toString(16).toUpperCase()+'</th>').join('')+'</tr>';
+ for(const r of rows){h+='<tr><th>'+r.addr.toString(16).toUpperCase().padStart(3,'0')+'</th>';
+  r.cells.forEach((v,i)=>{const a=r.addr+i,ch=prev&&prev[a]!==undefined&&prev[a]!==v;h+='<td'+(ch?' class="ch"':'')+'>'+(v==null?'--':v.toString(16).toUpperCase().padStart(2,'0'))+'</td>';});h+='</tr>';}
+ return h+'</table>';}
+function renderPopup(kind){
+ const p=popups[kind];if(!p||p.el.hidden||!window.DEBUG||!DEBUG.popup)return;
+ p.sp.textContent=POP[kind]+(kind=='watch'?'':' - '+(model&&model.pic?model.pic.id:'U1'));
+ const h2=v=>v.toString(16).toUpperCase().padStart(2,'0');let html='';
+ if(kind=='regs'){const r=DEBUG.popup.regs(core,PICM,dbgInfo),pv=popPrev.regs||{};
+  html='<div class="top">'+esc(r.top)+'</div><table>'+r.rows.map(([n,v])=>'<tr><td class="l">'+n+'</td><td'+(pv[n]!==undefined&&pv[n]!==v?' class="ch"':'')+'>0x'+h2(v)+'</td></tr>').join('')+'</table>PC=0x'+(r.pc&0x1FFF).toString(16).toUpperCase().padStart(4,'0');
+  popPrev.regs=Object.fromEntries(r.rows);}
+ else if(kind=='data'){const rows=DEBUG.popup.data(core),flat={};rows.forEach(r=>r.cells.forEach((v,i)=>{flat[r.addr+i]=v;}));html=hexRows(rows,popPrev.data);popPrev.data=flat;}
+ else if(kind=='eeprom'){const rows=DEBUG.popup.eeprom(core),flat={};rows.forEach(r=>r.cells.forEach((v,i)=>{flat[r.addr+i]=v;}));html=hexRows(rows,popPrev.eeprom);popPrev.eeprom=flat;}
+ else if(kind=='prog'){const rows=DEBUG.popup.prog(core,PICM,dbgInfo);
+  html='<table>'+rows.map(r=>'<tr><td class="l'+(r.pc?' pcr':'')+'">'+r.addr.toString(16).toUpperCase().padStart(4,'0')+'</td><td class="l'+(r.pc?' pcr':'')+'">'+r.op.toString(16).toUpperCase().padStart(4,'0')+'</td><td class="l'+(r.pc?' pcr':'')+'">'+esc(r.label?r.label+': ':'')+esc(r.text||'(blank)')+'</td></tr>').join('')+'</table>';}
+ else if(kind=='source'){const ln=pcLine(),src=ed.getValue().split('\n');
+  if(!ln)html=esc('(no source line information — build the code first)');
+  else{const a=Math.max(1,ln-8),b=Math.min(src.length,ln+8);for(let i=a;i<=b;i++)html+=(i==ln?'► ':'  ')+String(i).padStart(4)+'  '+esc(src[i-1])+'\n';}}
+ else if(kind=='watch'){const rows=dbg?dbg.watchRows():[];html=rows.length?'<table>'+rows.map(r=>'<tr><td class="l">'+esc(r.name)+'</td><td>'+esc(r.value==null?'?':r.value)+'</td><td>'+(r.addr==null?'':'0x'+r.addr.toString(16).toUpperCase().padStart(3,'0'))+'</td></tr>').join('')+'</table>':esc('(no watch items — add them in the Watch Values tab)');}
+ p.b.innerHTML=html;}
+function renderPopups(){for(const k in popups)if(!popups[k].el.hidden&&(k=='watch'||mode=='pause'))renderPopup(k);}
+
+/* ================= klavye (tablo güdümlü) ve odak ================= */
+const DBG_IDS=new Set(['startDebug','stopDebug','runPause','stepInto','stepOver','stepOut','runToCursor','toggleBp','jumpToInterrupt','viewBps','clearBps','watch','addWatch','disasm']);
+const EDT_IDS=new Set(['paramAssist','routineList','findDecl','findNext','findPrev','replace','deleteLine','redo','comment','uncomment','bookmarkSet','bookmarkGo','indent','unindent']);
+const GLOBAL_IDS=new Set(['save','build','buildAll','editProject']);
+const ACT={build:()=>build(),buildAll:()=>build(),startDebug:()=>dbgStart(),stopDebug:()=>setMode('stop'),
+ runPause:()=>{if(mode=='run'){if(HAS_DBG)pauseAt('pause');else setMode('pause');}else goRun();},
+ stepInto:()=>dstep('into'),stepOver:()=>dstep('over'),stepOut:()=>dstep('out'),runToCursor:()=>runToCursor(),toggleBp:()=>toggleBp(ed.cursor().line),
+ jumpToInterrupt:()=>jumpToInterrupt(),viewBps:()=>viewBps(),clearBps:()=>clearBps(),watch:()=>showTab('watch'),addWatch:()=>addWatchHere(),disasm:()=>showTab('dis'),
+ editProject:()=>openProject(),codeAssist:()=>{ed.focus();if(ed.complete)ed.complete();},paramAssist:()=>{if(ed.paramAssist&&!ed.paramAssist())toast(T('d.noParam'));},
+ template:()=>$('snip').focus(),gotoLine:()=>ed.openGoto&&ed.openGoto(),routineList:()=>routineList(),findDecl:()=>{if(!ed.findDecl||!ed.findDecl())toast(T('d.declNone'));},
+ find:()=>ed.openFind(false),findNext:()=>ed.findNext&&ed.findNext(1),findPrev:()=>ed.findNext&&ed.findNext(-1),replace:()=>ed.openReplace&&ed.openReplace(),
+ deleteLine:()=>ed.deleteLine&&ed.deleteLine(),redo:()=>ed.redo&&ed.redo(),comment:()=>ed.comment&&ed.comment(),uncomment:()=>ed.uncomment&&ed.uncomment(),
+ indent:()=>ed.indent&&ed.indent(),unindent:()=>ed.unindent&&ed.unindent(),save:()=>save(),options:()=>openOptions()};
+const typingIn=t=>/TEXTAREA|INPUT|SELECT/.test(t.tagName)||t.isContentEditable;
+function ideKey(e){
+ const f=KEYS.find(e,'ide');if(!f)return false;
+ const id=f.id,focus=document.body.dataset.focus,inCode=e.target===$('code')||!typingIn(e.target);
+ if(focus!='ide'&&!GLOBAL_IDS.has(id))return false;
+ if(DBG_IDS.has(id)&&(!HAS_DBG||window.TERM_FOCUS))return false;
+ if(EDT_IDS.has(id)&&!inCode)return false;
+ e.preventDefault();
+ if(id=='bookmarkSet'||id=='bookmarkGo'){const d=f.arg;if(d==null)return true;
+  if(id=='bookmarkSet'){if(ed.setBookmark)toast(T(ed.setBookmark(d)?'d.bmSet':'d.bmClear',[d]));}else if(ed.gotoBookmark&&!ed.gotoBookmark(d))toast(T('d.bmNone',[d]));return true;}
+ const fn=ACT[id];if(fn)fn();return true;}
+function isisKey(e){
+ const id=KEYS.action(e,'isis');if(!id||typingIn(e.target))return false;
+ const z={zoomIn:'in',zoomOut:'out',zoomAll:'all',centre:'centre'}[id];
+ if(z){if(!ED)return false;e.preventDefault();if(ED.zoomKey)ED.zoomKey(z);else if(z=='in')ED.zoom(1/1.25);else if(z=='out')ED.zoom(1.25);else if(z=='all')ED.fit();return true;}
+ const dc={startDebug:'start',pause:'pause',stop:'stop',stepOver:'stepOver',stepInto:'stepInto',stepOut:'stepOut'}[id];
+ if(dc){e.preventDefault();debugCmd(dc);return true;}
+ return false;}
+for(const [id,v] of [['mc','ide'],['pr','isis']]){const el=$(id);el.addEventListener('pointerdown',()=>{document.body.dataset.focus=v;},true);el.addEventListener('focusin',()=>{document.body.dataset.focus=v;});}
+const OVERLAYS=['newdlg','tdlg','adlg'],PICKS=['optbg','animbg','slbg','lsbg'];
+addEventListener('keydown',e=>{
+ if(e.key=='Escape'){mmClose();if(!$('epbg').hidden){epClose();return;}for(const d of PICKS)if(!$(d).hidden){$(d).hidden=true;return;}$('pmbg').hidden=true;for(const d of OVERLAYS)$(d).style.display='none';}
+ if(e.defaultPrevented)return;
+ if(document.body.dataset.focus=='isis'&&isisKey(e))return;
+ if(ideKey(e))return;
+ if(window.TERM_FOCUS||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName)||e.repeat||e.metaKey||e.ctrlKey)return;
+ const k=e.key.toUpperCase();if(mode!='stop'&&keyBtn[k])pressBtn(keyBtn[k],1);});
+addEventListener('keyup',e=>{const k=e.key.toUpperCase();if(keyBtn[k])pressBtn(keyBtn[k],0);});
+addEventListener('beforeunload',e=>{if(dirty||cdirty){e.preventDefault();e.returnValue='';}});
+addEventListener('pagehide',()=>{if(dirty&&cur&&navigator.sendBeacon)navigator.sendBeacon('/api/save',JSON.stringify({name:cur,code:ed.getValue(),fosc}));});
+setInterval(()=>fetch('/api/ping').catch(()=>{}),20000);
+initEditor();initDebug();setAnim(anim,true);picReset();setMode('stop');initWs().then(()=>listFiles());requestAnimationFrame(frame);
+log([['',T('d.hello1')],['',T('d.hello2')],['',T('d.hello3')],['',T('d.hello4')],
+ ...(HAS_DBG?[['',T('d.hello5')]]:[])],true);
+applyLang();
+</script></body></html>
